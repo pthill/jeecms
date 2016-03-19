@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com</groupId>
 	<artifactId>jeecms</artifactId>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jeecms Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -140,7 +141,7 @@
 		<!-- <version>4.10</version> -->
 		<!-- <scope>test</scope> -->
 		<!-- </dependency> -->
-		<!-- logback 配置需要下面2个maven dependency -->
+		<!-- logback 配置�?��下面2个maven dependency -->
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-classic</artifactId> -->
@@ -337,6 +338,11 @@
 			<artifactId>commons-discovery</artifactId>
 			<version>${commons.discovery.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-wsdl</artifactId>
+			<version>3.1.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>jeecms</finalName>
@@ -358,4 +364,10 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<modules>
+		<module>jeecms-core</module>
+		<module>jeecms-web</module>
+		<module>jeecms-api</module>
+	</modules>
 </project>
