@@ -11,7 +11,7 @@ import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.jeecms.model.ArticleModel;
 
-public class TestClient {
+public class AxisClient {
 
 	public static void main(String[] agrs) {
 

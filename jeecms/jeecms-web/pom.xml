@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com</groupId>
-			<artifactId>jeecms-api</artifactId>
+			<artifactId>jeecms-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

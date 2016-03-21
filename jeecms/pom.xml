@@ -339,9 +339,9 @@
 			<version>${commons.discovery.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-wsdl</artifactId>
-			<version>3.1.5</version>
+			<groupId>axis</groupId>
+			<artifactId>axis-wsdl4j</artifactId>
+			<version>1.5.1</version>
 		</dependency>
 	</dependencies>
 	<build>
