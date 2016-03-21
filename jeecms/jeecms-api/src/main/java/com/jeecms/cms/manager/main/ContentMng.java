@@ -16,6 +16,7 @@ import com.jeecms.cms.staticpage.exception.TemplateNotFoundException;
 import com.jeecms.cms.staticpage.exception.TemplateParseException;
 import com.jeecms.common.page.Pagination;
 import com.jeecms.core.entity.CmsUser;
+import com.jeecms.model.ArticleModel;
 
 public interface ContentMng {
 	public Pagination getPageByRight(String title, Integer typeId,Integer currUserId,
@@ -189,5 +190,5 @@ public interface ContentMng {
 	
 	public void updateFileByContent(Content bean,Boolean valid);
 	
-	
+	public ArticleModel getByArticleId(final Integer articleId);
 }

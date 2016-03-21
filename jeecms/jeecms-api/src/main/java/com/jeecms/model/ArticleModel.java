@@ -8,10 +8,8 @@ public class ArticleModel implements Serializable {
 	private static final long serialVersionUID = -1325453597739580402L;
 
 	private Long articleId;
-	
-	private String title;
 
-	private String url;
+	private String title;
 
 	private String content;
 
@@ -19,20 +17,24 @@ public class ArticleModel implements Serializable {
 
 	private String picture;
 
+	private Date releaseDate;
+
+	private String source;
+
+	private String author;
+
+	private String abstracts;
+
+	private Integer clicks;
+
+	private String publisher;
+	
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public String getContent() {
@@ -65,6 +67,54 @@ public class ArticleModel implements Serializable {
 
 	public void setArticleId(Long articleId) {
 		this.articleId = articleId;
+	}
+
+	public Date getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getAbstracts() {
+		return abstracts;
+	}
+
+	public void setAbstracts(String abstracts) {
+		this.abstracts = abstracts;
+	}
+
+	public Integer getClicks() {
+		return clicks;
+	}
+
+	public void setClicks(Integer clicks) {
+		this.clicks = clicks;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
 	}
 
 }

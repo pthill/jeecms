@@ -6,15 +6,16 @@
 	<parent>
 		<groupId>com</groupId>
 		<artifactId>jeecms</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<groupId>com</groupId>
 	<artifactId>jeecms-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>jeecms-core</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<main.base.path>../</main.base.path>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,7 +27,7 @@
 		<dependency>
 			<groupId>com</groupId>
 			<artifactId>jeecms-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -20,8 +20,10 @@ import org.springframework.util.Assert;
 import com.jeecms.cms.dao.main.ContentDao;
 import com.jeecms.cms.entity.assist.CmsFile;
 import com.jeecms.cms.entity.main.Channel;
+import com.jeecms.cms.entity.main.Channel.AfterCheckEnum;
 import com.jeecms.cms.entity.main.CmsTopic;
 import com.jeecms.cms.entity.main.Content;
+import com.jeecms.cms.entity.main.Content.ContentStatus;
 import com.jeecms.cms.entity.main.ContentCheck;
 import com.jeecms.cms.entity.main.ContentCount;
 import com.jeecms.cms.entity.main.ContentDoc;
@@ -29,8 +31,6 @@ import com.jeecms.cms.entity.main.ContentExt;
 import com.jeecms.cms.entity.main.ContentShareCheck;
 import com.jeecms.cms.entity.main.ContentTag;
 import com.jeecms.cms.entity.main.ContentTxt;
-import com.jeecms.cms.entity.main.Channel.AfterCheckEnum;
-import com.jeecms.cms.entity.main.Content.ContentStatus;
 import com.jeecms.cms.manager.assist.CmsCommentMng;
 import com.jeecms.cms.manager.assist.CmsFileMng;
 import com.jeecms.cms.manager.main.ChannelMng;
@@ -64,6 +64,7 @@ import com.jeecms.core.manager.CmsGroupMng;
 import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.core.manager.CmsWorkflowEventMng;
 import com.jeecms.core.manager.CmsWorkflowMng;
+import com.jeecms.model.ArticleModel;
 
 import freemarker.template.TemplateException;
 
@@ -1009,5 +1010,22 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Autowired
 	public void setStaticPageSvc(StaticPageSvc staticPageSvc) {
 		this.staticPageSvc = staticPageSvc;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ArticleModel getByArticleId(final Integer articleId) {
+		final Content c=this.findById(articleId);
+		final ArticleModel am = new ArticleModel();
+		am.setTitle(c.getTitle());
+		am.setAbstracts(c.getDesc());
+		am.setPicture(c.getTypeImg());
+		am.setCreateDate(c.getDate());
+		am.setContent(c.getTxt());
+		am.setAuthor(c.getAuthor());
+		am.setSource(c.getOrigin());
+		am.setClicks(c.getViews());
+		am.setReleaseDate(c.getReleaseDate());
+		return am;
 	}
 }
