@@ -191,4 +191,7 @@ public interface ContentMng {
 	public void updateFileByContent(Content bean,Boolean valid);
 	
 	public ArticleModel getByArticleId(final Integer articleId);
+
+
+	ArticleModel[] findAllContent(final Integer pageNo,final Integer pageSize);
 }

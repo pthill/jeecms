@@ -29,6 +29,10 @@ public class ArticleModel implements Serializable {
 
 	private String publisher;
 	
+	private String[] tags;
+	
+	private Long categoryId;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -115,6 +119,22 @@ public class ArticleModel implements Serializable {
 
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
+	}
+
+	public String[] getTags() {
+		return tags;
+	}
+
+	public void setTags(String[] tags) {
+		this.tags = tags;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

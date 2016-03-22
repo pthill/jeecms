@@ -17,6 +17,9 @@
 			<package-name>org.springframework.*</package-name>
 			<package-name>org.slf4j.*</package-name>
 			<package-name>javassist.*</package-name>
+			<package-name>org.apache.log4j.*</package-name>
+			<package-name>org.apache.logging.*</package-name>
+			<package-name>org.webjars.*</package-name>
 		</prefer-application-packages>
 	</container-descriptor>
 </weblogic-web-app> 
