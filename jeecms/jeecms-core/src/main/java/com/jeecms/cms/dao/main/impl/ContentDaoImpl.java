@@ -1,25 +1,23 @@
 package com.jeecms.cms.dao.main.impl;
 
-import static com.jeecms.cms.entity.main.Content.ContentStatus.all;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.checked;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.draft;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.passed;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.prepared;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.recycle;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.rejected;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.contribute;
-import static com.jeecms.cms.entity.main.Content.ContentStatus.pigeonhole;
-
-import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_START;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_END;
-import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_LIKE;
-import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_IN;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_EQ;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_GT;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_GTE;
+import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_IN;
+import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_LIKE;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_LT;
 import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_LTE;
-
+import static com.jeecms.cms.action.directive.abs.AbstractContentDirective.PARAM_ATTR_START;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.all;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.checked;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.contribute;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.draft;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.passed;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.pigeonhole;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.prepared;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.recycle;
+import static com.jeecms.cms.entity.main.Content.ContentStatus.rejected;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -33,13 +31,12 @@ import org.springframework.stereotype.Repository;
 
 import com.jeecms.cms.dao.main.ContentDao;
 import com.jeecms.cms.entity.main.Content;
+import com.jeecms.cms.entity.main.Content.ContentStatus;
 import com.jeecms.cms.entity.main.ContentCheck;
 import com.jeecms.cms.entity.main.ContentDoc;
-import com.jeecms.cms.entity.main.Content.ContentStatus;
 import com.jeecms.common.hibernate3.Finder;
 import com.jeecms.common.hibernate3.HibernateBaseDao;
 import com.jeecms.common.page.Pagination;
-import com.jeecms.common.util.DateUtils;
 
 @Repository
 public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
@@ -47,7 +44,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 	public Pagination getPage(String title, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,Integer modelId,
-			Integer channelId,int orderBy, int pageNo, int pageSize) {
+			Integer channelId,Date releaseStartDate, Date releaseEndDate,int orderBy, int pageNo, int pageSize) {
 		Finder f = Finder.create("select  bean from Content bean left join bean.contentShareCheckSet shareCheck left join shareCheck.channel tarChannel ");
 		if (rejected == status) {
 			f.append("  join bean.contentCheckSet check ");
@@ -82,7 +79,8 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		if(modelId!=null){
 			f.append(" and bean.model.id=:modelId").setParam("modelId", modelId);
 		}
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend);
+		
+		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,releaseStartDate,releaseEndDate);
 		appendOrder(f, orderBy);
 		return find(f, pageNo, pageSize);
 	}
@@ -125,7 +123,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 			f.append(" and check.rejected=true");
 			f.setParam("checkStep", checkStep);
 		}
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend);
+		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,null,null);
 		if (prepared == status) {
 			f.append(" order by check.checkStep desc,bean.id desc");
 		} else {
@@ -197,7 +195,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		if (rejected == status) {
 			f.append(" and check.rejected=true");
 		}
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend);
+		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,null,null);
 		appendOrder(f, orderBy);
 		return find(f, pageNo, pageSize);
 	}
@@ -228,11 +226,22 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 
 	private void appendQuery(Finder f, String title, Integer typeId,
 			Integer inputUserId, ContentStatus status, boolean topLevel,
-			boolean recommend) {
+			boolean recommend,Date releaseStartDate,Date releaseEndDate) {
 		if (!StringUtils.isBlank(title)) {
 			f.append(" and bean.contentExt.title like :title");
 			f.setParam("title", "%" + title + "%");
+			
+			f.append(" or bean.contentExt.author like :author");
+			f.setParam("author", "%" + title + "%");
 		}
+		
+		if (releaseStartDate != null) {
+			f.append(" and bean.contentExt.releaseDate>:releaseStartDate").setParam("releaseStartDate", releaseStartDate);
+		}
+		if (releaseEndDate != null) {
+			f.append(" and bean.contentExt.releaseDate<:releaseEndDate").setParam("releaseEndDate", releaseEndDate);
+		}
+		
 		if (typeId != null) {
 			f.append(" and bean.type.id=:typeId");
 			f.setParam("typeId", typeId);

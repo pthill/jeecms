@@ -70,7 +70,7 @@ public interface ContentDao {
 	public Pagination getPage(String title, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,Integer modelId,
-			Integer channelId,int orderBy, int pageNo, int pageSize);
+			Integer channelId,Date releaseStartDate, Date releaseEndDate,int orderBy, int pageNo, int pageSize);
 
 	/**
 	 * 获得自己发布的内容列表

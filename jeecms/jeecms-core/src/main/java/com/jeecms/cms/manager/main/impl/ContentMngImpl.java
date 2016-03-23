@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +65,7 @@ import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.core.manager.CmsWorkflowEventMng;
 import com.jeecms.core.manager.CmsWorkflowMng;
 import com.jeecms.model.ArticleModel;
+import com.jeecms.model.CategoryModel;
 
 import freemarker.template.TemplateException;
 
@@ -88,7 +88,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 			p = dao.getPageBySelf(title, typeId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, userId, orderBy, pageNo, pageSize);
 		} else if (allChannel && !selfData) {
 			// 拥有所有栏目权限，能够管理不属于自己的数据
-			p = dao.getPage(title, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, orderBy, pageNo, pageSize);
+			p = dao.getPage(title, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, null, null, orderBy, pageNo, pageSize);
 		} else {
 			p = dao.getPageByRight(title, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, departId, userId, selfData, orderBy, pageNo, pageSize);
 		}
@@ -96,11 +96,11 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	}
 
 	public Pagination getPageBySite(String title, Integer typeId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Integer siteId, int orderBy, int pageNo, int pageSize) {
-		return dao.getPage(title, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, orderBy, pageNo, pageSize);
+		return dao.getPage(title, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, null, null, orderBy, pageNo, pageSize);
 	}
 
 	public Pagination getPageForMember(String title, Integer channelId, Integer siteId, Integer modelId, Integer memberId, int pageNo, int pageSize) {
-		return dao.getPage(title, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, 0, pageNo, pageSize);
+		return dao.getPage(title, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, null, null, 0, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
@@ -946,26 +946,72 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		am.setClicks(c.getViews());
 		am.setReleaseDate(c.getReleaseDate());
 		am.setTags(c.getTagArray());
+		am.setArticleId(Long.valueOf(c.getId()));
 		return am;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public ArticleModel[] findAllContent(final Integer pageNo, final Integer pageSize) {
-		final Pagination p = this.getPageByRight("", 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, null, 1, 2, pageNo, pageSize);
+	public ArticleModel[] findAllContent(final String title, final Integer categoryId, final Date releaseStartDate, final Date releaseEndDate, final Integer pageNo, final Integer pageSize) {
+//		final Pagination p = this.getPageByRight(title, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, categoryId, 1, 2, pageNo, pageSize);
+		final Pagination p = dao.getPage(title, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, null, categoryId, releaseStartDate, releaseEndDate, 2, pageNo, pageSize);
 //		dao.getPage("", 1, 1, 0, false, false, checked, 3, 1, null, null, 2, pageNo.intValue(), pageSize.intValue());
 		final List<Content> cList = (List<Content>) p.getList();
 		final List<ArticleModel> amList = new ArrayList<ArticleModel>();
-
 		for (final Content c : cList) {
 			final ArticleModel am = new ArticleModel();
 			am.setTitle(c.getTitle());
 			am.setAbstracts(c.getDesc());
 			am.setPicture(c.getTypeImg());
 			am.setCreateDate(c.getDate());
+			am.setContent(c.getTxt());
+			am.setAuthor(c.getAuthor());
+			am.setSource(c.getOrigin());
+			am.setClicks(c.getViews());
+			am.setReleaseDate(c.getReleaseDate());
+			am.setTags(c.getTagArray());
 			am.setArticleId(Long.valueOf(c.getId()));
 			amList.add(am);
 		}
 		return amList.toArray(new ArticleModel[p.getTotalCount()]);
+	}
+
+	@Override
+	public CategoryModel[] findAllCategory() {
+		final List<Channel> cList= channelMng.getChildList(1, true);
+		final List<CategoryModel> cmList = new ArrayList<CategoryModel>();
+		for (final Channel c : cList) {
+			final CategoryModel cm = new CategoryModel();
+			cm.setCategoryId(Long.valueOf(c.getId()));
+			cm.setName(c.getName());
+			cm.setDescribe(c.getChannelExt().getDescription());
+//			cm.setPicture(picture);
+//			cm.setShortName(shortName);
+			cmList.add(cm);
+		}
+		return cmList.toArray(new CategoryModel[cmList.size()]);
+	}
+
+	@Override
+	public ArticleModel[] findByHotspots() {
+		final Pagination p = dao.getPage(null, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, null, null, null, null, 9, 1, 5);
+		final List<Content> cList = (List<Content>) p.getList();
+		final List<ArticleModel> amList = new ArrayList<ArticleModel>();
+		for (final Content c : cList) {
+			final ArticleModel am = new ArticleModel();
+			am.setTitle(c.getTitle());
+			am.setAbstracts(c.getDesc());
+			am.setPicture(c.getTypeImg());
+			am.setCreateDate(c.getDate());
+			am.setContent(c.getTxt());
+			am.setAuthor(c.getAuthor());
+			am.setSource(c.getOrigin());
+			am.setClicks(c.getViews());
+			am.setReleaseDate(c.getReleaseDate());
+			am.setTags(c.getTagArray());
+			am.setArticleId(Long.valueOf(c.getId()));
+			amList.add(am);
+		}
+		return amList.toArray(new ArticleModel[5]);
 	}
 }
