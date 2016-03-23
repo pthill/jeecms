@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com</groupId>
 	<artifactId>jeecms</artifactId>
@@ -8,10 +7,10 @@
 	<version>1.0</version>
 	<name>jeecms Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<main.base.path>../</main.base.path>
+		<build.dist.folder>dist</build.dist.folder>
+		<main.base.path>${project.basedir}</main.base.path>
 		<spring.version>3.2.6.RELEASE</spring.version>
 		<java.version>1.7</java.version>
 		<oracle.version>11.2.0.2.0</oracle.version>
@@ -47,7 +46,6 @@
 		<quartz.version>1.8.6</quartz.version>
 		<izpack.version>4.3.5</izpack.version>
 	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<!-- <dependency> -->
@@ -217,19 +215,16 @@
 				<artifactId>log4j</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
 				<version>${javax.mail.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>net.spy</groupId>
 				<artifactId>spymemcached</artifactId>
 				<version>${spymemcached.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.htmlparser</groupId>
 				<artifactId>htmlparser</artifactId>
@@ -246,19 +241,16 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
 			<dependency>
 				<groupId>c3p0</groupId>
 				<artifactId>c3p0</artifactId>
 				<version>${c3p0.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>javassist</groupId>
 				<artifactId>javassist</artifactId>
 				<version>${javassist.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
@@ -309,7 +301,6 @@
 				<artifactId>ojdbc6</artifactId>
 				<version>${oracle.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
@@ -354,23 +345,79 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<encoding>${project.build.sourceEncoding}</encoding>
-						<verbose>true</verbose>
-						<fork>true</fork>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<meminitial>128m</meminitial>
-						<maxmem>512m</maxmem>
-					</configuration>
+					<version>2.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<meminitial>128m</meminitial>
+					<maxmem>512m</maxmem>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<echo message="Cleaning dist folder" />
+								<delete dir="${build.dist.folder}" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>cn-ifast-cms-dev</id>
+			<properties>
+				<build.properties>${main.base.path}/build.empty.properties</build.properties>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<!-- Settings for the web application -->
+				<filters>
+					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.dev.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>cn-ifast-cms-trial</id>
+			<properties>
+				<build.properties>${main.base.path}/build.trial.2.properties</build.properties>
+			</properties>
+			<build>
+				<!-- Settings for the web application -->
+				<filters>
+					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.trial.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
 	<modules>
 		<module>jeecms-core</module>
 		<module>jeecms-web</module>
 		<module>jeecms-api</module>
+		<module>jeecms-deploy</module>
 	</modules>
 </project>

@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+    <groupId>com</groupId>
+    <artifactId>jeecms</artifactId>
+    <version>1.0</version>
+	</parent>
+	<artifactId>jeecms-deploy</artifactId>
+	<name>jeecms Deploy</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<main.base.path>../</main.base.path>
+	</properties>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>deploy.properties</file>
+								<file>${build.properties}</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
+								<echo message="Profile: ${current.profile}" />
+								<if>
+									<isset property="server.ip" />
+									<then>
+
+										<echo message="Uploading oauth WAR file(s) to home folder" />
+										<scp trust="true" port="${server.port}" todir="${server.username}:${server.password}@${server.ip}:~/">
+											<fileset dir="${main.base.path}/${build.dist.folder}">
+												<include name="jeecms-web.war" />
+											</fileset>
+										</scp>
+
+										<sshexec host="${server.ip}" port="${server.port}" trust="true" username="${server.username}" password="${server.password}" command="cd ${domain.path}; pwd; ${server.sudo.web} ./${script.jeecms.kill}" />
+
+										<echo message="Copying WAR files from home to ${server.deploy.path}" />
+
+										<sshexec host="${server.ip}" port="${server.port}" trust="true" username="${server.username}" password="${server.password}" command=" cd ${server.deploy.path}; pwd; cp ~/jeecms-web.war ." />
+
+										<sshexec host="${server.ip}" port="${server.port}" trust="true" username="${server.username}" password="${server.password}" command="cd ${domain.path}; pwd; ${server.sudo.web} ./${script.jeecms.start}" />
+
+									</then>
+									<else>
+										<echo message="Property 'server.ip' has no value, deployment is stopping" />
+										<echo message="This build will not deploy to server." />
+
+									</else>
+								</if>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>20020829</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.9.5</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+		</plugins>
+	</build>
+	<packaging>pom</packaging>
+</project>

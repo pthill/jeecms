@@ -22,4 +22,5 @@
 			<package-name>org.webjars.*</package-name>
 		</prefer-application-packages>
 	</container-descriptor>
+  <context-root>jeecms</context-root>
 </weblogic-web-app> 

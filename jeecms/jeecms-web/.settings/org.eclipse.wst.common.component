@@ -2,15 +2,14 @@
     <wb-module deploy-name="jeecms-web">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <dependent-module archiveName="jeecms-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jeecms-core/jeecms-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jeecms-api-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jeecms-api/jeecms-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="java-output-path" value="/jeecms-web/target/classes"/>
-        <property name="context-root" value="jeecms"/>
+        <property name="context-root" value="jeecms-web"/>
+        <property name="java-output-path" value="/jeecms-web/build/classes"/>
     </wb-module>
 </project-modules>
