@@ -2486,5 +2486,13 @@ UPDATE jc_content_picture
 
 UPDATE jc_file 
    SET file_path = '/jeecms'|| file_path
-   where file_path like '/u/%';	   
- 
+   where file_path like '/u/%';	 
+   
+UPDATE JC_SITE
+   SET DOMAIN = '192.168.63.23'
+WHERE SITE_ID = 1;
+
+UPDATE JC_CONFIG
+   SET CONTEXT_PATH = '/jeecms',
+       PORT = 80
+WHERE CONFIG_ID = 1;

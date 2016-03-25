@@ -446,6 +446,19 @@
 				</filters>
 			</build>
 		</profile>
+		<profile>
+			<id>cn-ifast-cms-live</id>
+			<properties>
+				<build.properties>${main.base.path}/build.empty.properties</build.properties>
+			</properties>
+			<build>
+				<!-- Settings for the web application -->
+				<filters>
+					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.live.properties</filter>
+				</filters>
+			</build>
+		</profile>
 	</profiles>
 	<modules>
 		<module>jeecms-core</module>

@@ -228,10 +228,8 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 			Integer inputUserId, ContentStatus status, boolean topLevel,
 			boolean recommend,Date releaseStartDate,Date releaseEndDate) {
 		if (!StringUtils.isBlank(title)) {
-			f.append(" and bean.contentExt.title like :title");
+			f.append(" and (bean.contentExt.title like :title or bean.contentExt.author like :author)");
 			f.setParam("title", "%" + title + "%");
-			
-			f.append(" or bean.contentExt.author like :author");
 			f.setParam("author", "%" + title + "%");
 		}
 		
