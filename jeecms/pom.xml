@@ -463,7 +463,6 @@
 	<modules>
 		<module>jeecms-core</module>
 		<module>jeecms-web</module>
-		<module>jeecms-api</module>
 		<module>jeecms-deploy</module>
 	</modules>
 </project>
