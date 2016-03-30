@@ -64,8 +64,6 @@ import com.jeecms.core.manager.CmsGroupMng;
 import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.core.manager.CmsWorkflowEventMng;
 import com.jeecms.core.manager.CmsWorkflowMng;
-import com.jeecms.model.ArticleModel;
-import com.jeecms.model.CategoryModel;
 
 import freemarker.template.TemplateException;
 
@@ -931,87 +929,4 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		this.staticPageSvc = staticPageSvc;
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public ArticleModel getByArticleId(final Integer articleId) {
-		final Content c = this.findById(articleId);
-		final ArticleModel am = new ArticleModel();
-		am.setTitle(c.getTitle());
-		am.setAbstracts(c.getDesc());
-		am.setPicture(c.getTypeImg());
-		am.setCreateDate(c.getDate());
-		am.setContent(c.getTxt());
-		am.setAuthor(c.getAuthor());
-		am.setSource(c.getOrigin());
-		am.setClicks(c.getViews());
-		am.setReleaseDate(c.getReleaseDate());
-		am.setTags(c.getTagArray());
-		am.setArticleId(Long.valueOf(c.getId()));
-		return am;
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public ArticleModel[] findAllContent(final String title, final Integer categoryId, final Date releaseStartDate, final Date releaseEndDate, final Integer pageNo, final Integer pageSize) {
-//		final Pagination p = this.getPageByRight(title, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, categoryId, 1, 2, pageNo, pageSize);
-		final Pagination p = dao.getPage(title, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, null, categoryId, releaseStartDate, releaseEndDate, 2, pageNo, pageSize);
-//		dao.getPage("", 1, 1, 0, false, false, checked, 3, 1, null, null, 2, pageNo.intValue(), pageSize.intValue());
-		final List<Content> cList = (List<Content>) p.getList();
-		final List<ArticleModel> amList = new ArrayList<ArticleModel>();
-		for (final Content c : cList) {
-			final ArticleModel am = new ArticleModel();
-			am.setTitle(c.getTitle());
-			am.setAbstracts(c.getDesc());
-			am.setPicture(c.getTypeImg());
-			am.setCreateDate(c.getDate());
-			am.setContent(c.getTxt());
-			am.setAuthor(c.getAuthor());
-			am.setSource(c.getOrigin());
-			am.setClicks(c.getViews());
-			am.setReleaseDate(c.getReleaseDate());
-			am.setTags(c.getTagArray());
-			am.setArticleId(Long.valueOf(c.getId()));
-			amList.add(am);
-		}
-		return amList.toArray(new ArticleModel[p.getTotalCount()]);
-	}
-
-	@Override
-	public CategoryModel[] findAllCategory() {
-		final List<Channel> cList= channelMng.getChildList(1, true);
-		final List<CategoryModel> cmList = new ArrayList<CategoryModel>();
-		for (final Channel c : cList) {
-			final CategoryModel cm = new CategoryModel();
-			cm.setCategoryId(Long.valueOf(c.getId()));
-			cm.setName(c.getName());
-			cm.setDescribe(c.getChannelExt().getDescription());
-//			cm.setPicture(picture);
-//			cm.setShortName(shortName);
-			cmList.add(cm);
-		}
-		return cmList.toArray(new CategoryModel[cmList.size()]);
-	}
-
-	@Override
-	public ArticleModel[] findByHotspots() {
-		final Pagination p = dao.getPage(null, 1, 1, 0, false, false, ContentStatus.checked, (byte) 3, 1, null, null, null, null, 9, 1, 5);
-		final List<Content> cList = (List<Content>) p.getList();
-		final List<ArticleModel> amList = new ArrayList<ArticleModel>();
-		for (final Content c : cList) {
-			final ArticleModel am = new ArticleModel();
-			am.setTitle(c.getTitle());
-			am.setAbstracts(c.getDesc());
-			am.setPicture(c.getTypeImg());
-			am.setCreateDate(c.getDate());
-			am.setContent(c.getTxt());
-			am.setAuthor(c.getAuthor());
-			am.setSource(c.getOrigin());
-			am.setClicks(c.getViews());
-			am.setReleaseDate(c.getReleaseDate());
-			am.setTags(c.getTagArray());
-			am.setArticleId(Long.valueOf(c.getId()));
-			amList.add(am);
-		}
-		return amList.toArray(new ArticleModel[5]);
-	}
 }

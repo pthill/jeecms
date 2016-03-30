@@ -1,2 +1,6 @@
 target
 dist
+.settings
+.classpath
+.project
+*.war
