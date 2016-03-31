@@ -303,7 +303,7 @@ function submitContent(){
 <#if item.field=="channelId">
 <#assign h><#if item.help??>${item.help}<#else><@s.m "content."+item.field+".help"/></#if></#assign>
 <@p.td required="true" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
-<div style="float:left">
+<div style="float:left;padding-right: 7px">
 <div>
 <select name="${item.field}">
 	<option value="" class="sel-disabled"><@s.m "global.pleaseSelect"/></option>
@@ -329,7 +329,7 @@ function submitContent(){
 </div>
 </div>
 
-<div style="float:left;padding-left:7px;<#if topicList?size == 0>display:none</#if>">
+<div style="<#if topicList?size == 0>display:none</#if>">
 <@s.m "content.topicIds"/>: 
 <span id="topics">
 <select name="topicIds" >
