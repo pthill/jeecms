@@ -34,6 +34,8 @@ function typeChange(n) {
 }
 function channelChange(n) {
 	if(n==0) {
+		var ts = $("#topics");
+		ts.empty();
 		return;
 	}
 	//0为请选择，所以必须减一。
@@ -49,19 +51,19 @@ function channelChange(n) {
 	fetchTopics(channels[n].id);
 }
 function fetchTopics(channelId) {
-	$.getJSON("../topic/by_channel.do",{channelId:channelId},function(topics) {
-		var ts = $("#topics");
-		ts.empty();
-		var len = topics.length;
-		var s="<select name='topicIds'>";
-		s+="<option value=''><@s.m 'content.topics'/></option>";
-		for(var i=0;i<len;i++) {
-			s+="<option value='"+topics[i].id+"'>"+topics[i].name+"</option>";
-		}
-		s+="</select>";
-		ts.append(s);
-		ts.parent().toggle(len>0);
-	});
+		$.getJSON("../topic/by_channel.do",{channelId:channelId},function(topics) {
+			var ts = $("#topics");
+			ts.empty();
+			var len = topics.length;
+			var s="<select name='topicIds'>";
+			s+="<option value=''><@s.m 'content.topics'/></option>";
+			for(var i=0;i<len;i++) {
+				s+="<option value='"+topics[i].id+"'>"+topics[i].name+"</option>";
+			}
+			s+="</select>";
+			ts.append(s);
+			ts.parent().toggle(len>0);
+		});
 }
 $.validator.methods.leafChannel = function(value, element, param) {
 	var i = element.selectedIndex;

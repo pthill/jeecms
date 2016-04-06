@@ -188,5 +188,6 @@ public interface ContentMng {
 	public Pagination getPageForCollection(Integer siteId, Integer memberId, int pageNo, int pageSize);
 	
 	public void updateFileByContent(Content bean,Boolean valid);
-	
+	public Byte getCheckStep();
+	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId);
 }

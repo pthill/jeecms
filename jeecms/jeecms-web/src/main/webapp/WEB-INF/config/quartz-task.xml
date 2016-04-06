@@ -18,6 +18,7 @@
 		<property name="jobDetail" ref="contentDayJobDetail" />
 		<property name="cronExpression" value="0 0 0 * * ?" />
 	</bean>
+	
 	<bean id="siteDayJob" class="com.jeecms.cms.task.job.SiteDayJob"></bean>
 	<bean id="siteDayJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="siteDayJob" />
@@ -26,6 +27,25 @@
 	<bean id="siteDayJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="siteDayJobDetail" />
 		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	
+	<!--东方财富采集  -->
+	<bean id="collectJob" class="com.jeecms.dfcf.job.CollectJob"></bean>
+	<bean id="collectJosonDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="collectJob" />
+		<property name="targetMethod" value="getResearchJson" />
+	</bean>
+	<bean id="collectJosonTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="collectJosonDetail" />
+		<property name="cronExpression" value="0 */5 * * * ?" />
+	</bean>
+	<bean id="collectJosonDetail1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="collectJob" />
+		<property name="targetMethod" value="getfundNewsJson" />
+	</bean>
+	<bean id="collectJosonTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="collectJosonDetail1" />
+		<property name="cronExpression" value="0 */3 * * * ?" />
 	</bean>
 	<!-- 调度器 -->
     <bean name="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
@@ -37,6 +57,8 @@
 			<list>   
 				<ref bean="contentDayJobTrigger" /> 
 				<ref bean="siteDayJobTrigger" />   
+				<ref bean="collectJosonTrigger" />   
+				<ref bean="collectJosonTrigger1" />   
 			</list> 
 		</property> 
     	<property name="taskExecutor" ref="executor" /> 

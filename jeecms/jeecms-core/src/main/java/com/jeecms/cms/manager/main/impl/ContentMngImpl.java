@@ -61,6 +61,7 @@ import com.jeecms.core.entity.CmsUserSite;
 import com.jeecms.core.entity.CmsWorkflow;
 import com.jeecms.core.entity.CmsWorkflowEvent;
 import com.jeecms.core.manager.CmsGroupMng;
+import com.jeecms.core.manager.CmsSiteMng;
 import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.core.manager.CmsWorkflowEventMng;
 import com.jeecms.core.manager.CmsWorkflowMng;
@@ -927,6 +928,19 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Autowired
 	public void setStaticPageSvc(StaticPageSvc staticPageSvc) {
 		this.staticPageSvc = staticPageSvc;
+	}
+
+	@Transactional(readOnly=true)
+	public Byte getCheckStep() {
+		CmsUser user = cmsUserMng.findById(1);
+		CmsSite site = cmsSiteMng.findById(1);
+		return user.getCheckStep(site.getId());
+	}
+	@Autowired
+	private CmsSiteMng cmsSiteMng;
+	
+	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId){
+		return dao.getByMaxReleaseDate(userId, channelId);
 	}
 
 }

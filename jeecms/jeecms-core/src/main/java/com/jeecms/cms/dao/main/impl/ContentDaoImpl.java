@@ -26,7 +26,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.jeecms.cms.dao.main.ContentDao;
@@ -955,5 +960,22 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 	@Override
 	protected Class<Content> getEntityClass() {
 		return Content.class;
+	}
+	
+	
+	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId) {
+		final DetachedCriteria dc=DetachedCriteria.forClass(Content.class);
+		dc.createAlias("contentExt", "contentExt");
+		dc.add(Restrictions.eq("channel.channelId",channelId));
+		dc.add(Restrictions.eq("user.userId",userId));
+		dc.setProjection(Projections.max("contentExt.releaseDate"));
+		
+		final Criteria c=getSession().createCriteria(Content.class);
+		c.createAlias("contentExt", "contentExt");
+		c.add(Property.forName("contentExt.releaseDate").eq(dc));
+		c.add(Restrictions.eq("channel.channelId",channelId));
+		c.add(Restrictions.eq("user.userId",userId));
+		
+		return (Content) c.uniqueResult();
 	}
 }
