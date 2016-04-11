@@ -1030,7 +1030,7 @@ CREATE TABLE JC_CONTENT_ATTACHMENT  (
    CONTENT_ID           NUMBER(11)                         NOT NULL,
    PRIORITY             NUMBER(11)                         NOT NULL,
    ATTACHMENT_PATH      VARCHAR2(255)                   NOT NULL,
-   ATTACHMENT_NAME      VARCHAR2(100)                   NOT NULL,
+   ATTACHMENT_NAME      VARCHAR2(256)                   NOT NULL,
    FILENAME             VARCHAR2(100),
    DOWNLOAD_COUNT       NUMBER(11)                        DEFAULT 0 NOT NULL
 );
@@ -1242,7 +1242,7 @@ CREATE TABLE JC_CONTENT_EXT  (
    AUTHOR               VARCHAR2(100),
    ORIGIN               VARCHAR2(100),
    ORIGIN_URL           VARCHAR2(255),
-   DESCRIPTION          VARCHAR2(512),
+   DESCRIPTION          VARCHAR2(2048),
    RELEASE_DATE         DATE                            NOT NULL,
    MEDIA_PATH           VARCHAR2(255),
    MEDIA_TYPE           VARCHAR2(20),
@@ -2673,6 +2673,8 @@ CREATE TABLE JC_USER  (
    GRAIN                NUMBER(11)                        DEFAULT 0 NOT NULL,
    CONSTRAINT PK_JC_USER PRIMARY KEY (USER_ID)
 );
+
+ALTER TABLE JC_USER ADD CONSTRAINT USERNAME_UNIQUE UNIQUE(USERNAME);
 
 COMMENT ON TABLE JC_USER IS
 'CMS用户表;';
