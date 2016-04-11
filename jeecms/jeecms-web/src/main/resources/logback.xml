@@ -17,5 +17,6 @@
 		<level value="ERROR" />
 		<appender-ref ref="STDOUT" />
 	</root>
+    
 </configuration>
 

@@ -963,19 +963,43 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 	}
 	
 	
-	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId) {
-		final DetachedCriteria dc=DetachedCriteria.forClass(Content.class);
-		dc.createAlias("contentExt", "contentExt");
-		dc.add(Restrictions.eq("channel.channelId",channelId));
-		dc.add(Restrictions.eq("user.userId",userId));
-		dc.setProjection(Projections.max("contentExt.releaseDate"));
-		
-		final Criteria c=getSession().createCriteria(Content.class);
-		c.createAlias("contentExt", "contentExt");
-		c.add(Property.forName("contentExt.releaseDate").eq(dc));
-		c.add(Restrictions.eq("channel.channelId",channelId));
-		c.add(Restrictions.eq("user.userId",userId));
-		
-		return (Content) c.uniqueResult();
+	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
+			Integer channelId, int pageNo, int pageSize) {
+		Finder f = Finder.create("select  bean from Content bean left join bean.contentShareCheckSet shareCheck left join shareCheck.channel tarChannel ");
+		if (rejected == status) {
+			f.append("  join bean.contentCheckSet check ");
+		}
+		if (prepared == status|| passed == status) {
+			f.append("  join bean.eventSet event  ");
+		}
+		if (channelId != null) {
+			f.append(" join bean.channel channel,Channel parent");
+			f.append(" where ((channel.lft between parent.lft and parent.rgt");
+			f.append(" and channel.site.id=parent.site.id");
+			f.append(" and parent.id=:parentId)   or (shareCheck.checkStatus<>0 and shareCheck.shareValid=true and  tarChannel.lft between parent.lft and parent.rgt and tarChannel.site.id=parent.site.id and parent.id=:parentId))");
+			f.setParam("parentId", channelId);
+		} else if (siteId != null) {
+			f.append(" where (bean.site.id=:siteId  or (shareCheck.checkStatus<>0 and shareCheck.shareValid=true and tarChannel.site.id=:siteId))");
+			f.setParam("siteId", siteId);
+		} else {
+			f.append(" where 1=1");
+		}
+		//跳级审核人不应该看到？
+		if (passed == status) {
+			//操作人不在待审人列表中且非终审 或非发起人
+			f.append("  and ((:operateId not in(select eventUser.user.id from CmsWorkflowEventUser eventUser where eventUser.event.id=event.id) and event.initiator.id!=:operateId) or event.initiator.id=:operateId) and event.nextStep!=-1").setParam("operateId", currUserId);
+		}
+		if (prepared == status) {
+			//操作人在待审人列表中
+			f.append("  and :operateId in(select eventUser.user.id from CmsWorkflowEventUser eventUser where eventUser.event.id=event.id)").setParam("operateId", currUserId);
+		}
+		if (rejected == status) {
+			f.append(" and check.rejected=true");
+		}
+		appendQuery(f, null, null, inputUserId, status, false, false,null,null);
+		f.append(" order by bean.contentExt.releaseDate desc");
+		return find(f, pageNo, pageSize);
 	}
+	
+	
 }

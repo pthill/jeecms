@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import com.jeecms.cms.dao.main.ContentDao;
 import com.jeecms.cms.entity.assist.CmsFile;
 import com.jeecms.cms.entity.main.Channel;
 import com.jeecms.cms.entity.main.Channel.AfterCheckEnum;
+import com.jeecms.cms.entity.main.CmsModel;
 import com.jeecms.cms.entity.main.CmsTopic;
 import com.jeecms.cms.entity.main.Content;
 import com.jeecms.cms.entity.main.Content.ContentStatus;
@@ -34,6 +36,7 @@ import com.jeecms.cms.entity.main.ContentTxt;
 import com.jeecms.cms.manager.assist.CmsCommentMng;
 import com.jeecms.cms.manager.assist.CmsFileMng;
 import com.jeecms.cms.manager.main.ChannelMng;
+import com.jeecms.cms.manager.main.CmsModelMng;
 import com.jeecms.cms.manager.main.CmsTopicMng;
 import com.jeecms.cms.manager.main.ContentCheckMng;
 import com.jeecms.cms.manager.main.ContentCountMng;
@@ -65,6 +68,8 @@ import com.jeecms.core.manager.CmsSiteMng;
 import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.core.manager.CmsWorkflowEventMng;
 import com.jeecms.core.manager.CmsWorkflowMng;
+import com.jeecms.dfcf.model.FundNewsBean;
+import com.jeecms.dfcf.model.ResearchBean;
 
 import freemarker.template.TemplateException;
 
@@ -190,6 +195,9 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		return entity;
 	}
 
+	
+	
+	
 	public Content save(Content bean, ContentExt ext, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
 		saveContent(bean, ext, txt, doc, channelId, typeId, draft, contribute, user, forMember);
 		// 保存副栏目
@@ -854,6 +862,8 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	private CmsWorkflowMng workflowMng;
 	@Autowired
 	private CmsWorkflowEventMng workflowEventMng;
+	@Autowired
+	private CmsModelMng cmsModelMng;
 
 	@Autowired
 	public void setChannelMng(ChannelMng channelMng) {
@@ -939,8 +949,74 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Autowired
 	private CmsSiteMng cmsSiteMng;
 	
-	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId){
-		return dao.getByMaxReleaseDate(userId, channelId);
+	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
+			Integer channelId, int pageNo, int pageSize){
+		return dao.getMaxReleaseDate(currUserId, inputUserId, status, checkStep, siteId, channelId, pageNo, pageSize);
 	}
-
+	
+	public void saveFundNews(Map<String, List<FundNewsBean>> map) {
+		CmsUser user = cmsUserMng.findById(1);
+		CmsSite site = cmsSiteMng.findById(1);
+		CmsModel cmsModel = cmsModelMng.findById(1);
+		
+		for(Entry<String,List<FundNewsBean>> e: map.entrySet()){
+			 Integer channelId = Integer.valueOf(e.getKey());	
+			 List<FundNewsBean> fundNewsBeans = e.getValue();
+			 for (int i = 0; i < fundNewsBeans.size(); i++) {
+				 FundNewsBean fundNewsBean = fundNewsBeans.get(i);
+				 Content bean = new Content();
+				 ContentExt ext = new ContentExt();
+				 ext.setAuthor(fundNewsBean.getAuthor());
+				 ext.setOrigin(fundNewsBean.getFrom());
+				 ext.setTitle(fundNewsBean.getTitle());
+				 ext.setReleaseDate(fundNewsBean.getDate());
+				 ext.setDescription(fundNewsBean.getDocreader());
+				 ContentTxt txt = new ContentTxt();
+				 txt.setTxt(fundNewsBean.getText());
+				 ContentDoc doc = new ContentDoc();
+				 Integer[] topicIds = {0};
+				 Integer typeId = 1;
+				 bean.setSite(site);
+				 bean.setModel(cmsModel);
+				 String[] tagArr = {};
+				 this.save(bean, ext, txt, doc, null, topicIds, null, tagArr,
+						 null, null, null, null, null, channelId, typeId, false,
+						 false, user, true);
+			 }
+		}
+	}
+	
+	public void saveResearchs(Map<String, List<ResearchBean>> map){
+		CmsUser user = cmsUserMng.findById(1);
+		CmsSite site = cmsSiteMng.findById(1);
+		CmsModel cmsModel = cmsModelMng.findById(1);
+		for(Entry<String,List<ResearchBean>> e: map.entrySet()){
+			 Integer channelId = Integer.valueOf(e.getKey());
+			 List<ResearchBean> researchBeans = e.getValue();
+			 for (int i = 0; i < researchBeans.size(); i++) {
+				 ResearchBean researchBean = researchBeans.get(i);
+				 Content bean = new Content();
+				 ContentExt ext = new ContentExt();
+				 ext.setAuthor(researchBean.getAuthorList().getAuth());
+				 ext.setTitle(researchBean.getTitle());
+				 ext.setOrigin("东方财富");
+				 ext.setReleaseDate(researchBean.getDate());
+				 ContentTxt txt = new ContentTxt();
+				 txt.setTxt(researchBean.getText());
+				 ContentDoc doc = new ContentDoc();
+				 Integer[] topicIds={0};
+				 Integer typeId = 1;
+				 bean.setSite(site);
+				 bean.setModel(cmsModel);
+				 String[] tagArr = {};
+				 String[] attachmentPaths= {researchBean.getAttach().getUrl()};
+				 String[] attachmentNames = {researchBean.getAttach().getName()};
+				 String[] attachmentFilenames = {researchBean.getAttach().getName()};
+				 this.save(bean, ext, txt, doc,null, topicIds, null,
+						 tagArr, attachmentPaths, attachmentNames, attachmentFilenames,
+						 null, null, channelId, typeId, false,false, user, true);
+			 }
+		}
+	}
+	
 }

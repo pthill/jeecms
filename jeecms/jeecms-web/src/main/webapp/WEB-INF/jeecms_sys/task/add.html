@@ -61,6 +61,10 @@ function selectTaskType(){
 		$("#floderTable").show();
 		$("#ftp").show();
 		$("#attr_ftp_id").prop("disabled","");
+	}else if(type==6){
+		$("#jobClass").val("com.jeecms.dfcf.job.FundNewsJob");
+	}else if(type==7){
+		$("#jobClass").val("com.jeecms.dfcf.job.ResearchJob");
 	}
 }
 function execycleSelect(){
@@ -141,7 +145,7 @@ function controlInput(intervalUnitValue){
 <div class="body-box">
 <@p.form id="jvForm" action="o_save.do">
 <@p.td  label="cms.task.type"  colspan="2">
-<@p.select id="type" onchange="selectTaskType()" list={"1":"cms.task.type.1","2":"cms.task.type.2","3":"cms.task.type.3","4":"cms.task.type.4","5":"cms.task.type.5"}  name="type" width="30"/>
+<@p.select id="type" onchange="selectTaskType()" list={"1":"cms.task.type.1","2":"cms.task.type.2","3":"cms.task.type.3","4":"cms.task.type.4","5":"cms.task.type.5","6":"cms.task.type.6","7":"cms.task.type.7"}  name="type" width="30"/>
 <span id="acqu" style="display: none;">
 <@s.m "cms.task.param.acqu.source"/>
 <select name="attr_acqu_id" id="attr_acqu_id" disabled="disabled">

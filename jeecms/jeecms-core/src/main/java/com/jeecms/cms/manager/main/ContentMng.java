@@ -16,6 +16,8 @@ import com.jeecms.cms.staticpage.exception.TemplateNotFoundException;
 import com.jeecms.cms.staticpage.exception.TemplateParseException;
 import com.jeecms.common.page.Pagination;
 import com.jeecms.core.entity.CmsUser;
+import com.jeecms.dfcf.model.FundNewsBean;
+import com.jeecms.dfcf.model.ResearchBean;
 
 public interface ContentMng {
 	public Pagination getPageByRight(String title, Integer typeId,Integer currUserId,
@@ -189,5 +191,8 @@ public interface ContentMng {
 	
 	public void updateFileByContent(Content bean,Boolean valid);
 	public Byte getCheckStep();
-	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId);
+	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
+			Integer channelId, int pageNo, int pageSize);
+	public void saveFundNews(Map<String, List<FundNewsBean>> map);
+	public void saveResearchs(Map<String, List<ResearchBean>> map);
 }

@@ -232,5 +232,6 @@ public interface ContentDao {
 	public Content updateByUpdater(Updater<Content> updater);
 
 	public Content deleteById(Integer id);
-	public Content getByMaxReleaseDate(final Integer userId,final Integer channelId);
+	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
+			Integer channelId, int pageNo, int pageSize);
 }
