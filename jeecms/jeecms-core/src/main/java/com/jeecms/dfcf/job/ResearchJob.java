@@ -34,6 +34,7 @@ public class ResearchJob extends QuartzJobBean{
 	private CmsSiteMng cmsSiteMng;
 	private ContentMng contentMng;
 	private ChannelMng manager;
+	private final static String USER_NAME = "system";
 	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
@@ -54,8 +55,8 @@ public class ResearchJob extends QuartzJobBean{
 	}
 	
 	public void getResearchJson() throws JSONException, ParseException, UnsupportedEncodingException {
-		CmsUser user = cmsUserMng.findById(1);
 		CmsSite site = cmsSiteMng.findById(1);
+		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		String[] str = { "T004005001", "T004005002" };
 		Map<String, List<ResearchBean>> map = new HashMap<String, List<ResearchBean>>();
 		for (int i = 0; i < str.length; i++) {

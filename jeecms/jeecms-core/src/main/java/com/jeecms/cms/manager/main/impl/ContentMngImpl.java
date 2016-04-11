@@ -955,7 +955,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	}
 	
 	public void saveFundNews(Map<String, List<FundNewsBean>> map) {
-		CmsUser user = cmsUserMng.findById(1);
+		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		CmsSite site = cmsSiteMng.findById(1);
 		CmsModel cmsModel = cmsModelMng.findById(1);
 		
@@ -981,13 +981,13 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 String[] tagArr = {};
 				 this.save(bean, ext, txt, doc, null, topicIds, null, tagArr,
 						 null, null, null, null, null, channelId, typeId, false,
-						 false, user, true);
+						 false, user, false);
 			 }
 		}
 	}
 	
 	public void saveResearchs(Map<String, List<ResearchBean>> map){
-		CmsUser user = cmsUserMng.findById(1);
+		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		CmsSite site = cmsSiteMng.findById(1);
 		CmsModel cmsModel = cmsModelMng.findById(1);
 		for(Entry<String,List<ResearchBean>> e: map.entrySet()){
@@ -1014,9 +1014,11 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 String[] attachmentFilenames = {researchBean.getAttach().getName()};
 				 this.save(bean, ext, txt, doc,null, topicIds, null,
 						 tagArr, attachmentPaths, attachmentNames, attachmentFilenames,
-						 null, null, channelId, typeId, false,false, user, true);
+						 null, null, channelId, typeId, false,false, user, false);
 			 }
 		}
 	}
+	
+	private final static String USER_NAME = "system";
 	
 }

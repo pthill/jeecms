@@ -32,6 +32,8 @@ public class FundNewsJob extends QuartzJobBean{
 	private ContentMng contentMng;
 	private ChannelMng manager;
 	
+	private final static String USER_NAME = "system";
+	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
@@ -52,8 +54,8 @@ public class FundNewsJob extends QuartzJobBean{
 	}
 	
 	public void getfundNewsJson() {
-		CmsUser user = cmsUserMng.findById(1);
 		CmsSite site = cmsSiteMng.findById(1);
+		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		String[] str = { "S888009009", "S888013001", "S888013002","S888013003","S888013004","S888013005","S888013006","S888013007","S888013008","S888013009"};
 		Map<String, List<FundNewsBean>> map = new HashMap<String, List<FundNewsBean>>();
 		for (int i = 0; i < str.length; i++) {
