@@ -54,6 +54,7 @@ public class ResearchJob extends QuartzJobBean{
 		    }
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getResearchJson() throws JSONException, ParseException, UnsupportedEncodingException {
 		CmsSite site = cmsSiteMng.findById(1);
 		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
@@ -66,10 +67,7 @@ public class ResearchJob extends QuartzJobBean{
 			if (channel!=null) {
 				channelId = channel.getId();
 			}
-			List<Content> contents = (List<Content>) contentMng
-					.getMaxReleaseDate(user.getId(), user.getId(),
-							ContentStatus.all, contentMng.getCheckStep(),
-							site.getId(), channelId, 1, 1).getList();
+			List<Content> contents = (List<Content>) contentMng.getMaxReleaseDate(user.getId(), user.getId(), ContentStatus.all, contentMng.getCheckStep(), site.getId(), channelId, 1, 1).getList();
 			String title = "";
 			Long time = 0L;
 			if (contents.size() > 0) {

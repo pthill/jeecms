@@ -218,9 +218,17 @@
 			<artifactId>axis-wsdl4j</artifactId>
 		</dependency>
 		<dependency>
-				<groupId>com.fcn</groupId>
-				<artifactId>cn-ifast-phoenix-util</artifactId>
-			</dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fcn</groupId>
+			<artifactId>cn-ifast-phoenix-util</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

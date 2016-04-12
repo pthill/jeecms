@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com</groupId>
 	<artifactId>jeecms</artifactId>
@@ -56,6 +55,7 @@
 		<httpclient.version>4.3.2</httpclient.version>
 		<quartz.version>1.8.6</quartz.version>
 		<izpack.version>4.3.5</izpack.version>
+		<logback.version>0.9.27</logback.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -153,16 +153,16 @@
 			<!-- <scope>test</scope> -->
 			<!-- </dependency> -->
 			<!-- logback 配置�?��下面2个maven dependency -->
-			<!-- <dependency> -->
-			<!-- <groupId>ch.qos.logback</groupId> -->
-			<!-- <artifactId>logback-classic</artifactId> -->
-			<!-- <version>${logback.version}</version> -->
-			<!-- </dependency> -->
-			<!-- <dependency> -->
-			<!-- <groupId>ch.qos.logback</groupId> -->
-			<!-- <artifactId>logback-core</artifactId> -->
-			<!-- <version>${logback.version}</version> -->
-			<!-- </dependency> -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
 			<!-- CGLib for @Configuration -->
 			<!-- <dependency> -->
 			<!-- <groupId>cglib</groupId> -->

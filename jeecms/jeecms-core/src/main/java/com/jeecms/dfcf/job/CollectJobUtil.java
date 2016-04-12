@@ -38,6 +38,7 @@ public class CollectJobUtil{
 	 */
 	public static String loadJson(String interfaceType,String id,int pageNo,int pageSize,String sort,String order) {
 		String url = "http://open.eastmoney.com/data/API/"+interfaceType+"/token/"+id+"/"+pageNo+"/"+pageSize+"/"+sort+"/"+order;
+		System.out.println(url);
 		StringBuilder json = new StringBuilder();
 		try {
 			URL urlObject = new URL(url);
