@@ -42,6 +42,7 @@ default-lazy-init="true">
 		<property name="maxIdleTime" value="${cpool.maxIdleTime}"/>
 		<property name="acquireIncrement" value="${cpool.acquireIncrement}"/>
 		<property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}"/>
+		<property name="preferredTestQuery" value="select 1 from dual"/>
 	</bean>
 	
 	<!--  
@@ -60,7 +61,6 @@ default-lazy-init="true">
 			hibernate.dialect=${hibernate.dialect}
 			hibernate.show_sql=false
 			hibernate.format_sql=false
-			hibernate.use_sql_comments=true
 			hibernate.query.substitutions=true 1, false 0
 			hibernate.jdbc.batch_size=20
 			hibernate.cache.use_query_cache=true

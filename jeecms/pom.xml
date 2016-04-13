@@ -99,15 +99,6 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
 				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>test</scope>
 			</dependency>
 			<!-- Spring AOP + AspectJ -->
 			<dependency>
@@ -145,14 +136,6 @@
 			<!-- <artifactId>aspectjweaver</artifactId> -->
 			<!-- <version>${aspectj.version}</version> -->
 			<!-- </dependency> -->
-			<!-- junit 4 -->
-			<!-- <dependency> -->
-			<!-- <groupId>junit</groupId> -->
-			<!-- <artifactId>junit</artifactId> -->
-			<!-- <version>4.10</version> -->
-			<!-- <scope>test</scope> -->
-			<!-- </dependency> -->
-			<!-- logback 配置�?��下面2个maven dependency -->
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
@@ -440,6 +423,7 @@
 				<!-- Settings for the web application -->
 				<filters>
 					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.server.properties</filter>
 					<filter>${main.base.path}/project.dev.properties</filter>
 				</filters>
 			</build>
@@ -453,6 +437,7 @@
 				<!-- Settings for the web application -->
 				<filters>
 					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.server.properties</filter>
 					<filter>${main.base.path}/project.trial.properties</filter>
 				</filters>
 			</build>
