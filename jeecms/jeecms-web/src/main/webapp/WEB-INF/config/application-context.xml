@@ -12,6 +12,7 @@ default-lazy-init="true">
 		<property name="locations">
 			<list>
 				<value>classpath:jdbc.properties</value>
+				<value>classpath:application.properties</value>
 			</list>
 		</property>
 	</bean>

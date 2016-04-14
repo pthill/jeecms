@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,6 +79,10 @@ public class UeditorAct {
 	private static final String UE_SEPARATE_UE="ue_separate_ue";
 	//提示信息
 	private static final String TIP = "tip";
+	
+	@Value("${jeecms.article.attachment.path}")
+	private String path;
+	
 	@RequiresPermissions("ueditor:upload")
 	@RequestMapping(value = "/ueditor/upload.do",method = RequestMethod.POST)
 	public void upload(
@@ -260,14 +265,14 @@ public class UeditorAct {
 				}
 				// 加上url前缀
 				fileUrl = ftp.getUrl() + fileUrl;
-			} else {
+			}else{
 				if (mark && isImg) {
 					File tempFile = mark(uplFile, conf);
-					fileUrl = fileRepository.storeByExt(site.getUploadPath(),
+					fileUrl = fileRepository.storeByExt(path,
 							ext, tempFile);
 					tempFile.delete();
 				} else {
-					fileUrl = fileRepository.storeByExt(site.getUploadPath(),
+					fileUrl = fileRepository.storeByExt(path,
 							ext, uplFile);
 				}
 				// 加上部署路径

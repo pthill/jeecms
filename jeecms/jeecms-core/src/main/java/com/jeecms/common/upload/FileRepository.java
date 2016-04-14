@@ -1,7 +1,11 @@
 package com.jeecms.common.upload;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
@@ -74,16 +78,29 @@ public class FileRepository implements ServletContextAware {
 	}
 	
 	private String getRealPath(String name){
-		String realpath=ctx.getRealPath(name);
-		if(realpath==null){
-			realpath=ctx.getRealPath("/")+name;
-		}
-		return realpath;
+//		String realpath=ctx.getRealPath(name);
+//		if(realpath==null){
+//			realpath=ctx.getRealPath("/")+name;
+//		}
+		return getFilePath()+name;
 	}
 
 	private ServletContext ctx;
 
 	public void setServletContext(ServletContext servletContext) {
 		this.ctx = servletContext;
+	}
+	private String getFilePath() {
+		String dir = "";
+	     try {
+	    	 String path = ctx.getRealPath("/")+"WEB-INF\\classes\\application.properties";
+	    	 Properties propertie = new Properties();  
+	    	 InputStream in = new BufferedInputStream(new FileInputStream(path));
+	    	 propertie.load(in);
+	    	 dir = propertie.getProperty("jeecms.workspace");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	     return dir;
 	}
 }

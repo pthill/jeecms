@@ -26,6 +26,7 @@
 		<property name="locations">
 			<list>
 				<value>/WEB-INF/config/firewall.properties</value>
+				<value>classpath:application.properties</value>
 			</list>
 		</property>
 	</bean>

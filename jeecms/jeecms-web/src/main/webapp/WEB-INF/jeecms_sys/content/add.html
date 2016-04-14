@@ -385,13 +385,13 @@ function submitContent(){
 <@p.textarea value="${item.defValue!}" cols="${item.cols!70}" rows="${item.rows!3}" maxlength="255" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
 
 <#elseif item.field=="author">
-<@p.td help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
-<@p.text name=item.field value="${item.defValue!}" maxlength="100" size="${item.size!}"/>
+<@p.td required="true" help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
+<@p.text name=item.field value="${item.defValue!}" class="required" maxlength="100" size="${item.size!}"/>
 </@p.td>
 
 <#elseif item.field=="origin">
-<@p.td help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
-<@p.text name=item.field value="${item.defValue!}" maxlength="100" style="width:70px"/> &nbsp;
+<@p.td required="true" help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
+<@p.text name=item.field value="${item.defValue!}" class="required" maxlength="100" style="width:70px"/> &nbsp;
 <@s.m "content.originUrl"/>: <input type="text" name="originUrl" maxlength="255" style="width:100px"/>
 </@p.td>
 

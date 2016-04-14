@@ -35,7 +35,7 @@ public class ResearchJob extends QuartzJobBean{
 	private ContentMng contentMng;
 	private ChannelMng manager;
 	private final static String USER_NAME = "system";
-	
+	private static final Integer PATH = 10;
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
@@ -74,20 +74,25 @@ public class ResearchJob extends QuartzJobBean{
 				title = contents.get(0).getTitle();
 				time = contents.get(0).getReleaseDate().getTime();
 			}
-			for (int j = 1; j < 10; j++) {
+			for (int j = 1; j < PATH; j++) {
 				String json = CollectJobUtil.loadJson("EMInfoCResearchList", str[i], j, 100,
 						"datetime", "desc");
 				if (json != "" && json != null) {
 					for (ResearchBean rb : CollectJobUtil.getResearchBeanIds(json, "records")) {
 						if (!title.equals(rb.getTitle())&& ((rb.getDate() != null && time != rb.getDate().getTime()) || rb.getDate() == null)) {
 							String s = CollectJobUtil.loadJsonText("EMInfoContent", "C", "H3",rb.getId());
-							s = s.substring(s.indexOf("{"), s.length());
-							AttachBean attachBean = CollectJobUtil.getAttachBean(s, "attach");
-							AuthorBean authorBean = CollectJobUtil.getAuthorBean(s,"authorList");
-							ResearchBean researchBean = CollectJobUtil.getResearchBean(s,attachBean, authorBean);
-							researchBeans.add(researchBean);
+							if (s.contains("{")&&s.indexOf("{")!=-1) {
+								s = s.substring(s.indexOf("{"), s.length());
+								AttachBean attachBean = CollectJobUtil.getAttachBean(s, "attach");
+								AuthorBean authorBean = CollectJobUtil.getAuthorBean(s, "authorList");
+								ResearchBean researchBean = CollectJobUtil.getResearchBean(s, attachBean, authorBean);
+								researchBeans.add(researchBean);
+							}else{
+								j+=PATH;
+								break;
+							}
 						} else {
-							j = 100;
+							j += PATH;
 							break;
 						}
 					}

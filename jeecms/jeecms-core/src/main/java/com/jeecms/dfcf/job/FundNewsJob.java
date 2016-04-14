@@ -33,6 +33,7 @@ public class FundNewsJob extends QuartzJobBean{
 	private ChannelMng manager;
 	
 	private final static String USER_NAME = "system";
+	private static final Integer PATH = 10;
 	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
@@ -75,16 +76,21 @@ public class FundNewsJob extends QuartzJobBean{
 				title = contents.get(0).getTitle();
 				time = contents.get(0).getReleaseDate().getTime();
 			}
-			for (int j = 1; j < 10; j++) {
+			for (int j = 1; j < PATH; j++) {
 				String json = CollectJobUtil.loadJson("EMInfoCNewsList", str[i], j, 100,"date", "desc");
 				if (json != "" && json != null) {
 					for (FundNewsBean fnb : CollectJobUtil.getFundNewsBeanIds(json, "records")) {
 						if (!title.equals(fnb.getTitle())&& ((fnb.getDate() != null&& time != fnb.getDate().getTime())||fnb.getDate()==null)) {
 							String s = CollectJobUtil.loadJsonText("EMInfoContent", "C", "H1",fnb.getId());
-							s = s.substring(s.indexOf("{"), s.length());
-							JSONObject jsonObject = new JSONObject(s);
-							FundNewsBean fundNewsBean = CollectJobUtil.getFundNewsBean(jsonObject);
-							fnbList.add(fundNewsBean);
+							if (s.contains("{")&&s.indexOf("{")!=-1) {
+								s = s.substring(s.indexOf("{"), s.length());
+								JSONObject jsonObject = new JSONObject(s);
+								FundNewsBean fundNewsBean = CollectJobUtil.getFundNewsBean(jsonObject);
+								fnbList.add(fundNewsBean);
+							}else{
+								j+=PATH;
+								break;
+							}
 						} else {
 							j=100;
 							break;

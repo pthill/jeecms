@@ -77,7 +77,7 @@ import freemarker.template.TemplateException;
 @Transactional
 public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Transactional(readOnly = true)
-	public Pagination getPageByRight(String title, Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize) {
+	public Pagination getPageByRight(String title,String origin,Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize) {
 		CmsUser user = cmsUserMng.findById(userId);
 		CmsUserSite us = user.getUserSite(siteId);
 		Pagination p;
@@ -89,22 +89,22 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		}
 		if (allChannel && selfData) {
 			// 拥有所有栏目权限，只能管理自己的数据
-			p = dao.getPageBySelf(title, typeId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, userId, orderBy, pageNo, pageSize);
+			p = dao.getPageBySelf(title,origin, typeId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, userId, orderBy, pageNo, pageSize);
 		} else if (allChannel && !selfData) {
 			// 拥有所有栏目权限，能够管理不属于自己的数据
-			p = dao.getPage(title, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, null, null, orderBy, pageNo, pageSize);
+			p = dao.getPage(title,origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, null, null, orderBy, pageNo, pageSize);
 		} else {
-			p = dao.getPageByRight(title, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, departId, userId, selfData, orderBy, pageNo, pageSize);
+			p = dao.getPageByRight(title,origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, departId, userId, selfData, orderBy, pageNo, pageSize);
 		}
 		return p;
 	}
 
 	public Pagination getPageBySite(String title, Integer typeId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Integer siteId, int orderBy, int pageNo, int pageSize) {
-		return dao.getPage(title, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, null, null, orderBy, pageNo, pageSize);
+		return dao.getPage(title,null, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, null, null, orderBy, pageNo, pageSize);
 	}
 
 	public Pagination getPageForMember(String title, Integer channelId, Integer siteId, Integer modelId, Integer memberId, int pageNo, int pageSize) {
-		return dao.getPage(title, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, null, null, 0, pageNo, pageSize);
+		return dao.getPage(title,null, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, null, null, 0, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)

@@ -67,7 +67,7 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPage(String title, Integer typeId,Integer currUserId,
+	public Pagination getPage(String title,String origin, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,Integer modelId,
 			Integer channelId,Date releaseStartDate, Date releaseEndDate,int orderBy, int pageNo, int pageSize);
@@ -101,7 +101,7 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPageBySelf(String title, Integer typeId,
+	public Pagination getPageBySelf(String title,String origin, Integer typeId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,
 			Integer channelId,Integer userId, int orderBy, int pageNo,
@@ -138,7 +138,7 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPageByRight(String title, Integer typeId,Integer currUserId,
+	public Pagination getPageByRight(String title,String origin, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,
 			Integer channelId,Integer departId,Integer userId, boolean selfData, int orderBy,

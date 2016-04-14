@@ -46,7 +46,7 @@ import com.jeecms.common.page.Pagination;
 @Repository
 public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		implements ContentDao {
-	public Pagination getPage(String title, Integer typeId,Integer currUserId,
+	public Pagination getPage(String title,String origin, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,Integer modelId,
 			Integer channelId,Date releaseStartDate, Date releaseEndDate,int orderBy, int pageNo, int pageSize) {
@@ -85,14 +85,14 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 			f.append(" and bean.model.id=:modelId").setParam("modelId", modelId);
 		}
 		
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,releaseStartDate,releaseEndDate);
+		appendQuery(f, title,origin, typeId, inputUserId, status, topLevel, recommend,releaseStartDate,releaseEndDate);
 		appendOrder(f, orderBy);
 		return find(f, pageNo, pageSize);
 	}
 	
 
 	//只能管理自己的数据不能审核他人信息，工作流相关表无需查询
-	public Pagination getPageBySelf(String title, Integer typeId,
+	public Pagination getPageBySelf(String title,String origin, Integer typeId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,
 			Integer channelId, Integer userId, int orderBy, int pageNo,
@@ -128,7 +128,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 			f.append(" and check.rejected=true");
 			f.setParam("checkStep", checkStep);
 		}
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,null,null);
+		appendQuery(f, title,origin, typeId, inputUserId, status, topLevel, recommend,null,null);
 		if (prepared == status) {
 			f.append(" order by check.checkStep desc,bean.id desc");
 		} else {
@@ -137,7 +137,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		return find(f, pageNo, pageSize);
 	}
 
-	public Pagination getPageByRight(String title, Integer typeId,Integer currUserId,
+	public Pagination getPageByRight(String title,String origin, Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,
 			Integer channelId, Integer departId, Integer userId, boolean selfData, int orderBy,
@@ -200,7 +200,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		if (rejected == status) {
 			f.append(" and check.rejected=true");
 		}
-		appendQuery(f, title, typeId, inputUserId, status, topLevel, recommend,null,null);
+		appendQuery(f, title,origin, typeId, inputUserId, status, topLevel, recommend,null,null);
 		appendOrder(f, orderBy);
 		return find(f, pageNo, pageSize);
 	}
@@ -229,13 +229,17 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		return find(f);
 	}
 
-	private void appendQuery(Finder f, String title, Integer typeId,
+	private void appendQuery(Finder f, String title,String origin, Integer typeId,
 			Integer inputUserId, ContentStatus status, boolean topLevel,
 			boolean recommend,Date releaseStartDate,Date releaseEndDate) {
 		if (!StringUtils.isBlank(title)) {
 			f.append(" and (bean.contentExt.title like :title or bean.contentExt.author like :author)");
 			f.setParam("title", "%" + title + "%");
 			f.setParam("author", "%" + title + "%");
+		}
+		if (!StringUtils.isBlank(origin)) {
+			f.append(" and (bean.contentExt.origin like :origin )");
+			f.setParam("origin", "%" + origin + "%");
 		}
 		
 		if (releaseStartDate != null) {
@@ -996,7 +1000,7 @@ public class ContentDaoImpl extends HibernateBaseDao<Content, Integer>
 		if (rejected == status) {
 			f.append(" and check.rejected=true");
 		}
-		appendQuery(f, null, null, inputUserId, status, false, false,null,null);
+		appendQuery(f, null,null, null, inputUserId, status, false, false,null,null);
 		f.append(" order by bean.contentExt.releaseDate desc");
 		return find(f, pageNo, pageSize);
 	}

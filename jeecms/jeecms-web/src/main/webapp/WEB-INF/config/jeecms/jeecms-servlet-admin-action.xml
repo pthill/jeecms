@@ -6,8 +6,7 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
 	default-lazy-init="true">
 	
-	<bean id="fckAct" class="com.jeecms.cms.action.admin.FckAct"/>
-	<bean id="ueditorAct" class="com.jeecms.cms.action.admin.UeditorAct"/>
+	<bean id="fileAct" class="com.jeecms.cms.action.FileAct"/>
 	<bean id="imageUploadAct" class="com.jeecms.cms.action.admin.ImageUploadAct"/>
 	<bean id="imageCutAct" class="com.jeecms.cms.action.admin.ImageCutAct"/>
 	<bean id="cmsLoginAct" class="com.jeecms.cms.action.admin.CmsLoginAct"/>
@@ -22,6 +21,7 @@
 	<bean id="luceneContentAct" class="com.jeecms.cms.lucene.LuceneContentAct"/>
 	<bean id="staticAct" class="com.jeecms.cms.staticpage.StaticAct"/>
 	<bean id="ftpAct" class="com.jeecms.cms.action.admin.main.FtpAct"/>
+	<bean id="ueditorAct" class="com.jeecms.cms.action.admin.UeditorAct"/>
 	<bean id="unifiedUserAct" class="com.jeecms.cms.action.admin.main.UnifiedUserAct"/>
 	<bean id="cmsSiteAct" class="com.jeecms.cms.action.admin.main.CmsSiteAct"/>
 	<bean id="cmsSiteConfigAct" class="com.jeecms.cms.action.admin.main.CmsSiteConfigAct"/>

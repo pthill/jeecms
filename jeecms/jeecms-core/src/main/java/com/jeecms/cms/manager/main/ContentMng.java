@@ -20,7 +20,7 @@ import com.jeecms.dfcf.model.FundNewsBean;
 import com.jeecms.dfcf.model.ResearchBean;
 
 public interface ContentMng {
-	public Pagination getPageByRight(String title, Integer typeId,Integer currUserId,
+	public Pagination getPageByRight(String title,String origin , Integer typeId,Integer currUserId,
 			Integer inputUserId, boolean topLevel, boolean recommend,
 			ContentStatus status, Byte checkStep, Integer siteId,
 			Integer channelId,Integer userId, int orderBy, int pageNo,

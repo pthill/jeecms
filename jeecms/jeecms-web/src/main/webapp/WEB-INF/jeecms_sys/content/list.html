@@ -444,6 +444,7 @@ function optUnPigeonhole() {
 <div style="padding-top:5px; padding-bottom:5px; text-indent:10px; border-bottom:1px solid #fff; border-top:1px solid #fff;">
 <@s.m "content.title"/>: <input type="text" name="queryTitle" value="${queryTitle!}" style="width:100px"/>
 <@s.m "content.user"/>: <input type="text" name="queryInputUsername" value="${queryInputUsername!}" style="width:70px"/>
+<@s.m "content.origin"/>: <input type="text" name="queryInputOrigin" value="${queryInputOrigin!}" style="width:70px"/>
 <label><input type="checkbox" name="queryTopLevel" value="true"<#if queryTopLevel?? && queryTopLevel> checked="checked"</#if>/><@s.m "content.topLevel.query"/></label>
 <label><input type="checkbox" name="queryRecommend" value="true"<#if queryRecommend?? && queryRecommend> checked="checked"</#if>/><@s.m "content.recommend"/></label>
 <@p.select name="queryTypeId" value=queryTypeId list=typeList listKey="id" listValue="name" headerKey="" headerValue="content.query.allType"/>
@@ -501,6 +502,7 @@ function optUnPigeonhole() {
 	</@p.column><#t/>
 	<@p.column code="content.type" align="center">${content.type.name}</@p.column><#t/>
 	<@p.column code="content.user" align="center">${content.user.username}</@p.column><#t/>
+	<@p.column code="content.origin" align="center">${content.contentExt.origin}</@p.column><#t/>
 	<@p.column code="content.views" align="center">${content.views}</@p.column><#t/>
 	<#if queryOrderBy??>
 		<#switch queryOrderBy>

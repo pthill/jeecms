@@ -180,6 +180,9 @@ public class ContentAct{
 		String queryInputUsername = RequestUtils.getQueryParam(request,
 				"queryInputUsername");
 		queryInputUsername = StringUtils.trim(queryInputUsername);
+		String queryInputOrigin = RequestUtils.getQueryParam(request,
+				"queryInputOrigin");
+		queryInputOrigin = StringUtils.trim(queryInputOrigin);
 		if (queryTopLevel == null) {
 			queryTopLevel = false;
 		}
@@ -213,7 +216,7 @@ public class ContentAct{
 		CmsUser user = CmsUtils.getUser(request);
 		Integer userId = user.getId();
 		byte currStep = user.getCheckStep(siteId);
-		Pagination p = manager.getPageByRight(queryTitle, queryTypeId,user.getId(),
+		Pagination p = manager.getPageByRight(queryTitle,queryInputOrigin, queryTypeId,user.getId(),
 				queryInputUserId, queryTopLevel, queryRecommend, status, user
 						.getCheckStep(siteId), siteId, cid, userId,
 				queryOrderBy, cpn(pageNo), CookieUtils.getPageSize(request));

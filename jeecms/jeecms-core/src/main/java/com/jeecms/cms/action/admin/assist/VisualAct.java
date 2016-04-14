@@ -171,7 +171,7 @@ public class VisualAct {
 		CmsUser user = CmsUtils.getUser(request);
 		Integer userId = user.getId();
 		byte currStep = user.getCheckStep(siteId);
-		Pagination p = contentMng.getPageByRight(queryTitle, null,user.getId(),
+		Pagination p = contentMng.getPageByRight(queryTitle,null, null,user.getId(),
 				queryInputUserId, false, false, status, user
 						.getCheckStep(siteId), siteId, cid, userId,
 				0, cpn(pageNo), CookieUtils.getPageSize(request));

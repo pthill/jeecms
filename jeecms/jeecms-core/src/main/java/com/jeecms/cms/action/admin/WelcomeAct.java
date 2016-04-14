@@ -81,8 +81,8 @@ public class WelcomeAct {
 		long maxMemory = runtime.maxMemory();
 		long useableMemory = maxMemory - totalMemory + freeMemoery;
 		//最新10条待审内容
-		List<Content>contents=(List<Content>) contentMng.getPageByRight(null, null, user.getId(), 0, false, false, ContentStatus.prepared, user.getCheckStep(site.getId()), site.getId(), null, user.getId(), 0, 1, 10).getList();
-		List<Content>newcontents=(List<Content>)contentMng.getPageByRight(null, null,  user.getId(), 0, false, false, ContentStatus.checked,  user.getCheckStep(site.getId()), site.getId(), null,user.getId(), 0, 1, 10).getList();
+		List<Content>contents=(List<Content>) contentMng.getPageByRight(null,null, null, user.getId(), 0, false, false, ContentStatus.prepared, user.getCheckStep(site.getId()), site.getId(), null, user.getId(), 0, 1, 10).getList();
+		List<Content>newcontents=(List<Content>)contentMng.getPageByRight(null,null, null,  user.getId(), 0, false, false, ContentStatus.checked,  user.getCheckStep(site.getId()), site.getId(), null,user.getId(), 0, 1, 10).getList();
 		model.addAttribute("props", props);
 		model.addAttribute("freeMemoery", freeMemoery);
 		model.addAttribute("totalMemory", totalMemory);
