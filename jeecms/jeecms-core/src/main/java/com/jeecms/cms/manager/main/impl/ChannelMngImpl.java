@@ -376,4 +376,9 @@ public class ChannelMngImpl implements ChannelMng {
 		this.dao = dao;
 	}
 
+	@Override
+	public List<Channel> findByPathsAndSitedId(final String[] paths,final Integer siteId) {
+		return dao.findByPathsAndSitedId(paths, siteId);
+	}
+
 }

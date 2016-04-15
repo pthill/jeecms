@@ -13,20 +13,79 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.stereotype.Controller;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SchedulerContext;
+import org.quartz.SchedulerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.fcn.phoenix.util.CalendarUtil;
+import com.jeecms.cms.entity.assist.CmsTask;
+import com.jeecms.cms.manager.main.ChannelMng;
+import com.jeecms.cms.manager.main.ContentMng;
+import com.jeecms.core.entity.CmsUser;
+import com.jeecms.core.manager.CmsUserMng;
 import com.jeecms.dfcf.model.AttachBean;
 import com.jeecms.dfcf.model.AuthorBean;
 import com.jeecms.dfcf.model.FundNewsBean;
 import com.jeecms.dfcf.model.ResearchBean;
 
-@Controller
-public class CollectJobUtil{
+public abstract class CollectJob extends QuartzJobBean {
 
+	private static final Logger logger = LoggerFactory.getLogger(CollectJob.class);
+	
+	protected CmsUserMng cmsUserMng;
+	protected ContentMng contentMng;
+	protected ChannelMng channelMng;
+	
+	
+	protected final static String USER_NAME = "system";
+	protected static final Integer PAGE = 5;
+	protected static final Integer SIZE = 20;
+	protected Integer siteId;
+	protected CmsUser user;
+	public abstract void runJob();
+	
+	@Override
+	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+		try {
+			final SchedulerContext schCtx = context.getScheduler().getContext();
+			// 获取Spring中的上下文
+			final ApplicationContext appCtx = (ApplicationContext) schCtx.get("applicationContext");
+			this.cmsUserMng = (CmsUserMng) appCtx.getBean("cmsUserMng");
+			this.contentMng = (ContentMng) appCtx.getBean("contentMng");
+			this.channelMng = (ChannelMng) appCtx.getBean("channelMng");
+
+			// getSiteId
+			final JobDataMap jdm = context.getJobDetail().getJobDataMap();
+			final String siteIdStr = (String) jdm.get(CmsTask.TASK_PARAM_SITE_ID);
+			if (StringUtils.isNotBlank(siteIdStr)) {
+				this.siteId = Integer.parseInt(siteIdStr);
+			} else {
+				this.siteId = 1;
+			}
+
+			// getUser
+			user = cmsUserMng.findByUsername(USER_NAME);
+
+			// run job
+			runJob();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void initJob(){
+		
+	}
 	/**
 	 * @param interfaceType 请求接口URL类型
 	 * @param id  栏目id
@@ -36,15 +95,18 @@ public class CollectJobUtil{
 	 * @param order  排序方式
 	 * @return
 	 */
-	public static String loadJson(String interfaceType,String id,int pageNo,int pageSize,String sort,String order) {
-		String url = "http://open.eastmoney.com/data/API/"+interfaceType+"/token/"+id+"/"+pageNo+"/"+pageSize+"/"+sort+"/"+order;
-		System.out.println(url);
-		StringBuilder json = new StringBuilder();
+	protected String loadJson(String interfaceType, String id, int pageNo, int pageSize, String sort, String order) {
+		final String url = "http://open.eastmoney.com/data/API/" + interfaceType + "/token/" + id + "/" + pageNo + "/" + pageSize + "/" + sort + "/" + order;
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(url);
+		}
+
+		final StringBuilder json = new StringBuilder();
 		try {
 			URL urlObject = new URL(url);
 			URLConnection uc = urlObject.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					uc.getInputStream(),"UTF-8"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), "UTF-8"));
 			String inputLine = null;
 			while ((inputLine = in.readLine()) != null) {
 				json.append(inputLine);
@@ -66,14 +128,13 @@ public class CollectJobUtil{
 	 * @param id
 	 * @return
 	 */
-	public static String loadJsonText(String interfaceType,String type,String h,String id) {
-		String url = "http://open.eastmoney.com/data/API/"+interfaceType+"/token/"+type+"/"+h+"/"+id;
-		StringBuilder json = new StringBuilder();
+	protected String loadJsonText(final String interfaceType, final String type, final String h, final String id) {
+		final String url = "http://open.eastmoney.com/data/API/" + interfaceType + "/token/" + type + "/" + h + "/" + id;
+		final StringBuilder json = new StringBuilder();
 		try {
-			URL urlObject = new URL(url);
-			URLConnection uc = urlObject.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					uc.getInputStream(),"UTF-8"));
+			final URL urlObject = new URL(url);
+			final URLConnection uc = urlObject.openConnection();
+			final BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), "UTF-8"));
 			String inputLine = null;
 			while ((inputLine = in.readLine()) != null) {
 				json.append(inputLine);
@@ -87,10 +148,10 @@ public class CollectJobUtil{
 		return json.toString();
 	}
 	
-	public static List<FundNewsBean> getFundNewsBeanIds(String jsonStr,String key) {
-		List<FundNewsBean> list = new ArrayList<FundNewsBean>();
+	protected List<FundNewsBean> getFundNewsBeanIds(final String jsonStr,final String key) {
+		final List<FundNewsBean> list = new ArrayList<FundNewsBean>();
 		try {// 将json字符串转换为json对象
-			JSONObject jsonObj = new JSONObject(jsonStr);
+			final JSONObject jsonObj = new JSONObject(jsonStr);
 			String idKey = "";
 			if("H1".equals(jsonObj.getString("H"))){
 				idKey = "Id";
@@ -98,7 +159,7 @@ public class CollectJobUtil{
 				idKey = "id";
 			}
 			// 得到指定json key对象的value对象
-			JSONArray jsonList = jsonObj.getJSONArray(key);
+			final JSONArray jsonList = jsonObj.getJSONArray(key);
 			// 遍历jsonArray
 			for (int i = 0; i < jsonList.length(); i++) {
 				FundNewsBean fundNewsBean = new FundNewsBean();
@@ -119,7 +180,7 @@ public class CollectJobUtil{
 		
 		return list;
 	}
-	public static List<ResearchBean> getResearchBeanIds(String jsonStr,String key) {
+	protected List<ResearchBean> getResearchBeanIds(String jsonStr,String key) {
 		List<ResearchBean> list = new ArrayList<ResearchBean>();
 		try {// 将json字符串转换为json对象
 			JSONObject jsonObj = new JSONObject(jsonStr);
@@ -158,7 +219,7 @@ public class CollectJobUtil{
 	 * @return
 	 * @throws ParseException 
 	 */
-	public static Date getDateTime(final String dateString) {
+	private Date getDateTime(final String dateString) {
 		Date date = null;
 		String[] formats = { "HH:mm","yyyy-MM-dd HH:mm", CalendarUtil.Format.DATE.toString(), CalendarUtil.Format.DATETIME.toString() };
 		for (String format : formats) {
@@ -191,7 +252,7 @@ public class CollectJobUtil{
 	}
 	
 	@SuppressWarnings("static-access")
-	public static FundNewsBean getFundNewsBean(JSONObject jsonObject) {
+	protected FundNewsBean getFundNewsBean(JSONObject jsonObject) {
 		FundNewsBean fundNewsBean = new FundNewsBean();
 		if(jsonObject.getNames("Author").length>0){
 			fundNewsBean.setAuthor(jsonObject.getNames("Author")[0]);
@@ -213,7 +274,7 @@ public class CollectJobUtil{
 		return fundNewsBean;
 	}
 	
-	public static ResearchBean getResearchBean(String s,AttachBean attachBean,AuthorBean authorBean){
+	protected ResearchBean getResearchBean(String s,AttachBean attachBean,AuthorBean authorBean){
 		ResearchBean researchBean = new ResearchBean();
 		JSONObject jsonObject = new JSONObject(s);
 		researchBean.setAttach(attachBean);
@@ -247,7 +308,7 @@ public class CollectJobUtil{
 		return researchBean;
 	}
 	
-	public static AttachBean getAttachBean(String jsonStr,String key) {
+	protected AttachBean getAttachBean(String jsonStr,String key) {
 		AttachBean attachBean = new AttachBean();
 
 		try {// 将json字符串转换为json对象
@@ -272,7 +333,7 @@ public class CollectJobUtil{
 		return attachBean;
 	}
 	
-	public static AuthorBean getAuthorBean(String jsonStr,String key) {
+	protected AuthorBean getAuthorBean(String jsonStr,String key) {
 		AuthorBean authorBean = new AuthorBean();
 
 		try {// 将json字符串转换为json对象

@@ -40,4 +40,7 @@ public interface ChannelDao {
 	public Channel deleteById(Integer id);
 	
 	public void initWorkFlow(Integer workflowId);
+
+	//custom method
+	List<Channel> findByPathsAndSitedId(final String[] paths,final Integer siteId);
 }

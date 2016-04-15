@@ -2,7 +2,9 @@ package com.jeecms.cms.dao.main.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.jeecms.cms.dao.main.ChannelDao;
@@ -192,9 +194,9 @@ public class ChannelDaoImpl extends HibernateBaseDao<Channel, Integer>
 	}
 
 	public Channel findByPath(String path, Integer siteId, boolean cacheable) {
-		String hql = "from Channel bean where bean.path=? and bean.site.id=?";
+		String hql = "from Channel bean where bean.path=:path and bean.site.id= :siteId";
 		Query query = getSession().createQuery(hql);
-		query.setParameter(0, path).setParameter(1, siteId);
+		query.setParameter("path", path).setParameter("siteId", siteId);
 		// 做一些容错处理，因为毕竟没有在数据库中限定path是唯一的。
 		query.setMaxResults(1);
 		return (Channel) query.setCacheable(cacheable).uniqueResult();
@@ -223,4 +225,14 @@ public class ChannelDaoImpl extends HibernateBaseDao<Channel, Integer>
 	protected Class<Channel> getEntityClass() {
 		return Channel.class;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Channel> findByPathsAndSitedId(final String[] paths,final Integer siteId) {
+		final Criteria c=getSession().createCriteria(Channel.class);
+		c.add(Restrictions.in("path", paths));
+		c.add(Restrictions.eq("site.id", siteId));
+		return c.list();
+	}
+	
 }

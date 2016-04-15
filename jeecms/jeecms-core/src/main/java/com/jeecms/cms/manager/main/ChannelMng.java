@@ -104,4 +104,7 @@ public interface ChannelMng {
 	public void initWorkFlow(Integer workflowId);
 
 	public String checkDelete(Integer id);
+	
+	//extend
+	public List<Channel> findByPathsAndSitedId(final String[] paths,final Integer siteId);
 }
