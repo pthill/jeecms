@@ -200,6 +200,8 @@ $(function() {
 			$("#step_"+$(this).attr("id").split("status_")[1]).show();
 		});
 	});
+	var id = $("#channelId").val();
+	$("#queryChannelId option[value='"+id+"']").attr("selected", true);
 });
 
 function checkSelectContentNum(){
@@ -448,9 +450,18 @@ function optUnPigeonhole() {
 <label><input type="checkbox" name="queryTopLevel" value="true"<#if queryTopLevel?? && queryTopLevel> checked="checked"</#if>/><@s.m "content.topLevel.query"/></label>
 <label><input type="checkbox" name="queryRecommend" value="true"<#if queryRecommend?? && queryRecommend> checked="checked"</#if>/><@s.m "content.recommend"/></label>
 <@p.select name="queryTypeId" value=queryTypeId list=typeList listKey="id" listValue="name" headerKey="" headerValue="content.query.allType"/>
-<#--
-<@p.select name="queryStatus" value=queryStatus list={"0":"content.status.0","1":"content.status.1","2":"content.status.2"} headerKey="" headerValue="content.query.allStatus"/>
--->
+
+<select id="queryChannelId" name="queryChannelId">
+	<option value="" class="sel-disabled"><@s.m "global.pleaseSelect"/></option>
+<#if channelList?size gt 0>
+<#assign origDeep=channelList[0].deep+1/>
+<#list channelList as c>
+		<#if c.hasContent || c.child?size gt 0>
+		<option value="${c.id}" <#if c.modelIds?size gt 0&&!c.modelIds?seq_contains(model.id?string)|| c.child?size gt 0> class="sel-disabled"</#if>><#if c.deep gte origDeep><#list origDeep..c.deep as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+		</#if>
+</#list>
+</#if>
+</select><input type="hidden" id="channelId" value="${queryChannelId!}" />
 <@p.select name="queryOrderBy" value=queryOrderBy list={"0":"content.orderBy.0","1":"content.orderBy.1","2":"content.orderBy.2","3":"content.orderBy.3","4":"content.orderBy.4","5":"content.orderBy.5","6":"content.orderBy.6","7":"content.orderBy.7","8":"content.orderBy.8","9":"content.orderBy.9","10":"content.orderBy.10","11":"content.orderBy.11","12":"content.orderBy.12","13":"content.orderBy.13","14":"content.orderBy.14","15":"content.orderBy.15","16":"content.orderBy.16","17":"content.orderBy.17","18":"content.orderBy.18","19":"content.orderBy.19","20":"content.orderBy.20","21":"content.orderBy.21"}/>
 <input type="hidden" name="cid" value="${cid!}"/>
 <input class="query" type="submit" value="<@s.m "global.query"/>"/>
@@ -573,7 +584,7 @@ function optUnPigeonhole() {
 		<#if content.needRegenerate> <span style="color:#6da807"><@s.m "content.static.needRegenerate"/></span><#else><span style="color:green"><@s.m "content.static.hasGenerated"/></span></#if>
 	</@p.column><#t/>
 	<@p.column code="global.operate" align="center">
-		<#assign params>&cid=${cid!}&pageNo=${pageNo!}&queryTitle=${queryTitle!?url}&queryInputUsername=${queryInputUsername!?url}&queryTopLevel=${(queryTopLevel!false)?string}&queryRecommend=${(queryRecommend!false)?string}&queryTypeId=${queryTypeId!}&queryStatus=${queryStatus!}&queryOrderBy=${queryOrderBy!}</#assign>
+		<#assign params>&cid=${cid!}&pageNo=${pageNo!}&queryTitle=${queryTitle!?url}&queryInputUsername=${queryInputUsername!?url}&queryTopLevel=${(queryTopLevel!false)?string}&queryRecommend=${(queryRecommend!false)?string}&queryTypeId=${queryTypeId!}&queryStatus=${queryStatus!}&queryChannelId=${queryChannelId!}&queryOrderBy=${queryOrderBy!}</#assign>
 		<@cms_perm url="/content/v_view.do">
 		<a href="v_view.do?id=${content.id}${params}" class="pn-opt"><@s.m "content.opt.view"/></a> | <#rt/>
 		</@cms_perm>

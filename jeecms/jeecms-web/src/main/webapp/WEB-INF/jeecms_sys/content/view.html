@@ -22,7 +22,15 @@ $(function() {
 function optReject() {
 	$("#rejectDialog").dialog("open");
 }
-
+function optCheck() {
+	var f = getTableForm();
+	if(confirm("确定审核该文章吗？")){
+		f.action="o_check.do";
+		f.submit();
+	}else{
+		return false;
+	}
+}
 function rejectSubmit() {
 	$("input[name=rejectOpinion]").val($("#rejectOpinion").val());
 	$("input[name=rejectStep]").val($("#rejectStep").val());
@@ -34,6 +42,7 @@ function rejectSubmit() {
 function getTableForm() {
 	return document.getElementById('jvForm');
 }
+
 </script>
 <style type="text/css">
 h1{text-align:center;font-size:18px;}
@@ -65,7 +74,7 @@ h1{text-align:center;font-size:18px;}
 	<input type="hidden" name="rejectStep"/>
 	<input type="hidden" name="rejectOpinion"/>
 	<#if content.siteId==site.id>
-		<input class="check" type="submit" value="<@s.m "content.opt.check"/>" onclick="this.form.action='o_check.do'"/>
+		<input class="save-order" style="width: 100px" type="submit" value="<@s.m "content.opt.checked"/>" onclick="return optCheck()"/>
 		<input class="reject" type="button" value="<@s.m "content.opt.reject"/>" onclick="$('#rejectDialog').dialog('open');"/>
 		<!-- <input class="edit" type="submit" value="<@s.m "global.edit"/>" onclick="this.form.action='v_edit.do'"/> -->
 	</#if>

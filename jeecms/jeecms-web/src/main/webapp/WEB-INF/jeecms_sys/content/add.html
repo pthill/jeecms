@@ -264,6 +264,11 @@ function uploadAttachSuccess(file,data) {
 		$("#attachmentNames"+index).val(attachName);
 	}
 }
+function draftContent(){
+    $("#draft").val("true");
+	submitContent();
+}
+
 function submitContent(){
 	//选择发送微信消息
 	var t=$("#sendType").val();
@@ -416,8 +421,8 @@ function submitContent(){
 <#elseif item.field=="typeId">
 <@p.td help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
 <@p.select list=typeList listKey="id" listValue="name" onchange="typeChange(this.selectedIndex)" name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
-&nbsp; <label><input type="checkbox" onclick="$('#recommend').val(this.checked)"/><@s.m "content.recommend"/><input type="hidden" id="recommend" name="recommend" value="false"/></label>
-&nbsp; <label><input type="checkbox" onclick="$('#draft').val(this.checked)"/><@s.m "content.draft"/><input type="hidden" id="draft" name="draft" value="false"/></label>
+<!-- &nbsp; <label><input type="checkbox" onclick="$('#recommend').val(this.checked)"/><@s.m "content.recommend"/><input type="hidden" id="recommend" name="recommend" value="false"/></label>
+&nbsp; <label><input type="checkbox" onclick="$('#draft').val(this.checked)"/><@s.m "content.draft"/><input type="hidden" id="draft" name="draft" value="false"/></label> -->
 </@p.td>
 
 <#elseif item.field=="tplContent">
@@ -622,19 +627,27 @@ function addPicLine() {
 <@p.td help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
 <@p.radio name=item.field value="true" list={"true":"global.true","false":"global.false"} required="true"/><@p.tr/>
 </@p.td>
-
 </#if>
 
 <#else>
 <@p.selfDefineWidget name="attr_${item.field}" value=item.defValue size="${item.size!}" list="${item.optValue!}" help=item.help helpPosition="${item.helpPosition!2}" rows="${item.rows!}" cols="${item.cols!}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}" type="${item.dataType}"/>
 </#if>
 <#if count%2==0></tr><tr<#if item_has_next><#assign f=itemList[item_index+1].field/> id="tr-${f}"<#if (f=="typeImg" && !typeList[0].hasImage) || (f=="titleImg" && (!channel?? || !channel.hasTitleImg) || (f=="contentImg" && (!channel?? || !channel.hasContentImg)))> style="display:none"</#if></#if>></#if>
+
 </#list>
+<tr >
+<td class="pn-flabel pn-flabel-h"><@s.m "content.recommend.article"/></td>
+<td align="center" class="pn-fcontent"  colspan="3"><label>
+<input type="radio" name="article" onclick="$('#recommend').val(true)"/>是 &nbsp; &nbsp;
+<input type="radio" name="article" onclick="$('#recommend').val(false)" checked="checked"/>否
+<input type="hidden" id="recommend" name="recommend" value="false"/></label></td>
+</tr>
 <@p.td colspan="2">
 	<input type="hidden" name="cid" value="${cid!}"/>
 	<input type="hidden" name="modelId" value="${model.id!}"/>
-	<input type="hidden" name="model.id" value="${model.id!}"/>
-	<@p.submit code="global.submit" onclick="return submitContent()"/> &nbsp; <@p.reset code="global.reset"/>
+	<input type="hidden" name="model.id" value="${model.id!}" />
+	<input type="hidden" id="draft" name="draft" value="false"/>
+	<@p.submit code="global.submit.draft" onclick="return draftContent()" style="width: 100px"/> &nbsp;<@p.submit code="global.submit.checked" style="width: 100px" onclick="return submitContent()"/> &nbsp; <@p.reset code="global.reset"/>
 </@p.td>
 </@p.form>
 </div>

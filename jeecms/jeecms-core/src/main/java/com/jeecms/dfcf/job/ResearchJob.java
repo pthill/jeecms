@@ -88,11 +88,11 @@ public class ResearchJob extends QuartzJobBean{
 								ResearchBean researchBean = CollectJobUtil.getResearchBean(s, attachBean, authorBean);
 								researchBeans.add(researchBean);
 							}else{
-								j+=PATH;
+								j = PATH;
 								break;
 							}
 						} else {
-							j += PATH;
+							j = PATH;
 							break;
 						}
 					}
@@ -103,5 +103,5 @@ public class ResearchJob extends QuartzJobBean{
 		contentMng.saveResearchs(map);
 	}
 	
-
+	
 }

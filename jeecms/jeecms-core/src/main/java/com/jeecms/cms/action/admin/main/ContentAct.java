@@ -170,7 +170,7 @@ public class ContentAct{
 
 	@RequiresPermissions("content:v_list")
 	@RequestMapping("/content/v_list.do")
-	public String list(String queryStatus, Integer queryTypeId,
+	public String list(String queryStatus, Integer queryTypeId,Integer queryChannelId,
 			Boolean queryTopLevel, Boolean queryRecommend,
 			Integer queryOrderBy, Integer cid, Integer pageNo,
 			HttpServletRequest request, ModelMap model) {
@@ -191,6 +191,9 @@ public class ContentAct{
 		}
 		if (queryOrderBy == null) {
 			queryOrderBy = 4;
+		}
+		if(queryChannelId!=null){
+			cid = queryChannelId;
 		}
 		ContentStatus status;
 		if (!StringUtils.isBlank(queryStatus)) {
@@ -226,9 +229,13 @@ public class ContentAct{
 			Channel c=channelMng.findById(cid);
 			models=c.getModels(models);
 		}
+		List<Channel> topList = channelMng.getTopListForDepartId(null,userId,siteId,true);
+		List<Channel> channelList = Channel.getListForSelect(topList, null, true);
 		model.addAttribute("pagination", p);
 		model.addAttribute("cid", cid);
+		model.addAttribute("queryChannelId", queryChannelId);
 		model.addAttribute("typeList", typeList);
+		model.addAttribute("channelList", channelList);
 		model.addAttribute("currStep", currStep);
 		model.addAttribute("site", site);
 		model.addAttribute("models", models);
@@ -541,7 +548,7 @@ public class ContentAct{
 		log.info("update Content id={}.", bean.getId());
 		cmsLogMng.operating(request, "content.log.update", "id=" + bean.getId()
 				+ ";title=" + bean.getTitle());
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 
@@ -577,7 +584,7 @@ public class ContentAct{
 						+ bean.getId() + ";title=" + bean.getTitle());
 			}
 		}
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 	
@@ -596,7 +603,7 @@ public class ContentAct{
 		for (Content bean : beans) {
 			log.info("check Content id={}", bean.getId());
 		}
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 	
@@ -649,7 +656,7 @@ public class ContentAct{
 			model.addAttribute("message", errors.getMessage(e.getMessage(),
 					new Object[] { e.getErrorTitle(), e.getGenerated() }));
 		}
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 
@@ -669,7 +676,7 @@ public class ContentAct{
 		for (Content bean : beans) {
 			log.info("reject Content id={}", bean.getId());
 		}
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 	
@@ -704,7 +711,7 @@ public class ContentAct{
 		for (Content bean : beans) {
 			log.info("submit Content id={}", bean.getId());
 		}
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend,
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend,
 				queryOrderBy, cid, pageNo, request, model);
 	}
 	
@@ -819,7 +826,7 @@ public class ContentAct{
 			manager.update(c);
 		}
 		log.info("update content priority.");
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
 	}
 	
 	@RequiresPermissions("content:o_pigeonhole")
@@ -835,7 +842,7 @@ public class ContentAct{
 			manager.update(c);
 		}
 		log.info("update CmsFriendlink priority.");
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
 	}
 	
 	@RequiresPermissions("content:o_unpigeonhole")
@@ -851,7 +858,7 @@ public class ContentAct{
 			manager.update(c);
 		}
 		log.info("update CmsFriendlink priority.");
-		return list(queryStatus, queryTypeId, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
+		return list(queryStatus, queryTypeId,null, queryTopLevel, queryRecommend, queryOrderBy, cid, pageNo, request, model);
 	}
 	
 	/**
@@ -1085,7 +1092,7 @@ public class ContentAct{
 	public String cycleList(Integer queryTypeId, Boolean queryTopLevel,
 			Boolean queryRecommend, Integer queryOrderBy, Integer cid,
 			Integer pageNo, HttpServletRequest request, ModelMap model) {
-		list(ContentStatus.recycle.toString(), queryTypeId, queryTopLevel,
+		list(ContentStatus.recycle.toString(), queryTypeId,null, queryTopLevel,
 				queryRecommend, queryOrderBy, cid, pageNo, request, model);
 		return "content/cycle_list";
 	}
@@ -1276,7 +1283,7 @@ public class ContentAct{
 				 return errors.showErrorPage(model);
 			 }
 		}
-		return list(null, null, null, null, null, channelId, 1, request, model);
+		return list(null, null, null, null,null, null, channelId, 1, request, model);
 	}
 	
 	private void saveContent(Integer channelId,Integer typeId,Integer modelId,Boolean draft,

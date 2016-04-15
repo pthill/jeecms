@@ -88,11 +88,11 @@ public class FundNewsJob extends QuartzJobBean{
 								FundNewsBean fundNewsBean = CollectJobUtil.getFundNewsBean(jsonObject);
 								fnbList.add(fundNewsBean);
 							}else{
-								j+=PATH;
+								j=PATH;
 								break;
 							}
 						} else {
-							j=100;
+							j=PATH;
 							break;
 						}
 
