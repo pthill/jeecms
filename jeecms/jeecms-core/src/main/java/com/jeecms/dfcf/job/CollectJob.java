@@ -24,6 +24,7 @@ import org.quartz.SchedulerContext;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -41,9 +42,11 @@ import com.jeecms.dfcf.model.ResearchBean;
 public abstract class CollectJob extends QuartzJobBean {
 
 	private static final Logger logger = LoggerFactory.getLogger(CollectJob.class);
-	
+	@Autowired
 	protected CmsUserMng cmsUserMng;
+	@Autowired
 	protected ContentMng contentMng;
+	@Autowired
 	protected ChannelMng channelMng;
 	
 	
@@ -56,31 +59,20 @@ public abstract class CollectJob extends QuartzJobBean {
 	
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		try {
-			final SchedulerContext schCtx = context.getScheduler().getContext();
-			// 获取Spring中的上下文
-			final ApplicationContext appCtx = (ApplicationContext) schCtx.get("applicationContext");
-			this.cmsUserMng = (CmsUserMng) appCtx.getBean("cmsUserMng");
-			this.contentMng = (ContentMng) appCtx.getBean("contentMng");
-			this.channelMng = (ChannelMng) appCtx.getBean("channelMng");
-
-			// getSiteId
-			final JobDataMap jdm = context.getJobDetail().getJobDataMap();
-			final String siteIdStr = (String) jdm.get(CmsTask.TASK_PARAM_SITE_ID);
-			if (StringUtils.isNotBlank(siteIdStr)) {
-				this.siteId = Integer.parseInt(siteIdStr);
-			} else {
-				this.siteId = 1;
-			}
-
-			// getUser
-			user = cmsUserMng.findByUsername(USER_NAME);
-
-			// run job
-			runJob();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
+		// getSiteId
+		final JobDataMap jdm = context.getJobDetail().getJobDataMap();
+		final String siteIdStr = (String) jdm.get(CmsTask.TASK_PARAM_SITE_ID);
+		if (StringUtils.isNotBlank(siteIdStr)) {
+			this.siteId = Integer.parseInt(siteIdStr);
+		} else {
+			this.siteId = 1;
 		}
+
+		// getUser
+		user = cmsUserMng.findByUsername(USER_NAME);
+
+		// run job
+		runJob();
 	}
 	
 	protected void initJob(){
