@@ -24,6 +24,7 @@ import org.quartz.SchedulerContext;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -67,9 +68,22 @@ public abstract class CollectJob extends QuartzJobBean {
 		} else {
 			this.siteId = 1;
 		}
-
-		// getUser
-		user = cmsUserMng.findByUsername(USER_NAME);
+		
+		try {
+			final SchedulerContext schCtx = context.getScheduler().getContext();
+			final ApplicationContext appCtx = (ApplicationContext) schCtx.get("applicationContext");
+			this.cmsUserMng = (CmsUserMng) appCtx.getBean("cmsUserMng");
+			this.contentMng = (ContentMng) appCtx.getBean("contentMng");
+			this.channelMng = (ChannelMng) appCtx.getBean("channelMng");
+			// getUser
+			user = cmsUserMng.findByUsername(USER_NAME);
+		} catch (BeansException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// run job
 		runJob();
