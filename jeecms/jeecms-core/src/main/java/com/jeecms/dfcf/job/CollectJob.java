@@ -22,10 +22,10 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerContext;
 import org.quartz.SchedulerException;
+import org.quartz.StatefulJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -40,20 +40,17 @@ import com.jeecms.dfcf.model.AuthorBean;
 import com.jeecms.dfcf.model.FundNewsBean;
 import com.jeecms.dfcf.model.ResearchBean;
 
-public abstract class CollectJob extends QuartzJobBean {
+public abstract class CollectJob extends QuartzJobBean implements StatefulJob{
 
 	private static final Logger logger = LoggerFactory.getLogger(CollectJob.class);
-	@Autowired
 	protected CmsUserMng cmsUserMng;
-	@Autowired
 	protected ContentMng contentMng;
-	@Autowired
 	protected ChannelMng channelMng;
 	
 	
 	protected final static String USER_NAME = "system";
-	protected static final Integer PAGE = 5;
-	protected static final Integer SIZE = 20;
+	protected static final Integer PAGE = 3;
+	protected static final Integer SIZE = 50;
 	protected Integer siteId;
 	protected CmsUser user;
 	public abstract void runJob();
@@ -78,10 +75,8 @@ public abstract class CollectJob extends QuartzJobBean {
 			// getUser
 			user = cmsUserMng.findByUsername(USER_NAME);
 		} catch (BeansException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

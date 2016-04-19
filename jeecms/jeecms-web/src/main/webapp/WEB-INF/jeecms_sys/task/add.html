@@ -32,6 +32,7 @@ $(function() {
 	$("#attr_channel_id").parent().hide();
 	$("#attr_channel_id").prop("disabled","disabled");
 	controlInput(1);
+	$("#cronExpression").hide();
 });
 function selectTaskType(){
 	var type=$("#type").val();
@@ -200,18 +201,18 @@ function addFloderLine() {
 <@p.td label="cms.task.execycle" colspan="2" width="100">
 <input name="execycle"  type="radio" value="1" onclick="execycleSelect()" checked="checked"/>
 <@p.select name="intervalUnit" onchange="selectUnit()" id="intervalUnit" list={"1":"cms.task.interval.unit.1","2":"cms.task.interval.unit.2","3":"cms.task.interval.unit.3","4":"cms.task.interval.unit.4","5":"cms.task.interval.unit.5"}/>
-	<span id="dayOfMonthSpan"><input name="dayOfMonth" id="dayOfMonthInput" vld="{range:[1,31]}"/><@s.m "cms.task.dayOfMonth"/></span>
-	<span id="dayOfWeekSpan"><input name="dayOfWeek" id="dayOfWeekInput" vld="{range:[1,7]}"/><@s.m "cms.task.dayOfWeek"/></span>
-	<span id="hourSpan"><input name="hour" id="hourInput"  vld="{range:[0,23]}"/><@s.m "cms.task.hour"/></span>
-	<span id="minuteSpan"><input name="minute" id="minuteInput"  vld="{range:[0,59]}"/><@s.m "cms.task.minute"/></span>
-	<span id="intervalHourSpan"><@s.m "cms.task.interval"/><input name="intervalHour" vld="{digits:true,range:[0,23]}" id="intervalHourInput"/><@s.m "cms.task.interval.Hour"/></span>
-	<span id="intervalMinuteSpan"><@s.m "cms.task.interval"/><input name="intervalMinute" vld="{digits:true,range:[0,59]}" id="intervalMinuteInput"/><@s.m "cms.task.interval.Minute"/></span>
+	<span id="dayOfMonthSpan"><input name="dayOfMonth" id="dayOfMonthInput" vld="{range:[1,31]}" required="true"/><@s.m "cms.task.dayOfMonth"/></span>
+	<span id="dayOfWeekSpan"><input name="dayOfWeek" id="dayOfWeekInput" vld="{range:[1,7]}" required="true"/><@s.m "cms.task.dayOfWeek"/></span>
+	<span id="hourSpan"><input name="hour" id="hourInput"  vld="{range:[0,23]}" required="true"/><@s.m "cms.task.hour"/></span>
+	<span id="minuteSpan"><input name="minute" id="minuteInput"  vld="{range:[0,59]}" required="true"/><@s.m "cms.task.minute"/></span>
+	<span id="intervalHourSpan"><@s.m "cms.task.interval"/><input name="intervalHour" vld="{digits:true,range:[0,23]}" id="intervalHourInput" required="true"/><@s.m "cms.task.interval.Hour"/></span>
+	<span id="intervalMinuteSpan"><@s.m "cms.task.interval"/><input name="intervalMinute" vld="{digits:true,range:[0,59]}" id="intervalMinuteInput" required="true"/><@s.m "cms.task.interval.Minute"/></span>
 </@p.td>
 <@p.tr/>
 
 <@p.td colspan="2" label="cms.task.cronExpression">
 <input name="execycle"  type="radio" value="2" onclick="execycleSelect()"/>
-<input name="cronExpression" id="cronExpression"/>
+<input name="cronExpression" id="cronExpression" required="true"/>
 </@p.td><@p.tr/>
 
 <@p.radio width="100" colspan="2" label="cms.task.status" name="enable" value="true" list={"true":"cms.task.enable","false":"cms.task.disable"} required="true"/><@p.tr/>

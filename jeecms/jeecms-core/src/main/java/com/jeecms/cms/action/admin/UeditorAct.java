@@ -337,6 +337,7 @@ public class UeditorAct {
 							.valueOf(laveSize)));
 			return result;
 		}
+		log.warn("ResourceType.FILE:"+ResourceType.FILE.toString());
 		if (!ResourceType.isValidType(typeStr)) {
 			result.put(STATE, LocalizedMessages
 					.getInvalidResouceTypeSpecified(request));

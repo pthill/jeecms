@@ -239,7 +239,7 @@ public class ContentAct{
 		model.addAttribute("currStep", currStep);
 		model.addAttribute("site", site);
 		model.addAttribute("models", models);
-		addAttibuteForQuery(model, queryTitle, queryInputUsername, queryStatus,
+		addAttibuteForQuery(model, queryTitle, queryInputUsername,queryInputOrigin, queryStatus,
 				queryTypeId, queryTopLevel, queryRecommend, queryOrderBy,
 				pageNo);
 		time = System.currentTimeMillis() - time;
@@ -360,7 +360,7 @@ public class ContentAct{
 		String queryTitle = RequestUtils.getQueryParam(request, "queryTitle");
 		String queryInputUsername = RequestUtils.getQueryParam(request,
 				"queryInputUsername");
-		addAttibuteForQuery(model, queryTitle, queryInputUsername, queryStatus,
+		addAttibuteForQuery(model, queryTitle, queryInputUsername,null, queryStatus,
 				queryTypeId, queryTopLevel, queryRecommend, queryOrderBy,
 				pageNo);
 		return "content/view";
@@ -454,7 +454,7 @@ public class ContentAct{
 		String queryTitle = RequestUtils.getQueryParam(request, "queryTitle");
 		String queryInputUsername = RequestUtils.getQueryParam(request,
 				"queryInputUsername");
-		addAttibuteForQuery(model, queryTitle, queryInputUsername, queryStatus,
+		addAttibuteForQuery(model, queryTitle, queryInputUsername,null, queryStatus,
 				queryTypeId, queryTopLevel, queryRecommend, queryOrderBy,
 				pageNo);
 		model.addAttribute("sessionId",request.getSession().getId());
@@ -1305,7 +1305,7 @@ public class ContentAct{
 	}
 
 	private void addAttibuteForQuery(ModelMap model, String queryTitle,
-			String queryInputUsername, String queryStatus, Integer queryTypeId,
+			String queryInputUsername,String queryInputOrigin, String queryStatus, Integer queryTypeId,
 			Boolean queryTopLevel, Boolean queryRecommend,
 			Integer queryOrderBy, Integer pageNo) {
 		if (!StringUtils.isBlank(queryTitle)) {
@@ -1313,6 +1313,9 @@ public class ContentAct{
 		}
 		if (!StringUtils.isBlank(queryInputUsername)) {
 			model.addAttribute("queryInputUsername", queryInputUsername);
+		}
+		if (!StringUtils.isBlank(queryInputOrigin)) {
+			model.addAttribute("queryInputOrigin", queryInputOrigin);
 		}
 		if (queryTypeId != null) {
 			model.addAttribute("queryTypeId", queryTypeId);

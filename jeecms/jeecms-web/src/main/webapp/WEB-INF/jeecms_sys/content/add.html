@@ -125,6 +125,17 @@ $(function() {
 		 autoFocus: true
 	});
 	$(document).tooltip();
+	
+	 $("#description").keyup(function(){
+		 var area = $(this);
+		 var max = parseInt(area.attr("maxlength"), 10);
+		 var len= area.val().length;
+		 if(len<=max){
+			
+		 }
+		 
+	 });
+	
 });
 function appendChannels(channel) {
 	var hasContain = false;
@@ -387,7 +398,7 @@ function submitContent(){
 <@p.text value="${item.defValue!}" maxlength="50" size="${item.size!35}" help="${h}" helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
 
 <#elseif item.field=="description">
-<@p.textarea value="${item.defValue!}" cols="${item.cols!70}" rows="${item.rows!3}" maxlength="255" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+<@p.textarea value="${item.defValue!}" cols="${item.cols!70}" rows="${item.rows!3}" maxlength="2048" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field id=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
 
 <#elseif item.field=="author">
 <@p.td required="true" help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
@@ -399,6 +410,11 @@ function submitContent(){
 <@p.text name=item.field value="${item.defValue!}" class="required" maxlength="100" style="width:70px"/> &nbsp;
 <@s.m "content.originUrl"/>: <input type="text" name="originUrl" maxlength="255" style="width:100px"/>
 </@p.td>
+
+<tr>
+	<td class="pn-flabel" width="10%"><@s.m "content.foundation"/></td>
+	<td colspan="3" class="pn-fcontent"><input type="text" style="width: 300px;"/><label>用","分开</label></td>
+</tr>
 
 <#elseif item.field=="viewGroupIds">
 <#assign h><#if item.help??>${item.help}<#else><@s.m "content."+item.field+".help"/></#if></#assign>

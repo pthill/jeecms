@@ -966,10 +966,10 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 FundNewsBean fundNewsBean = fundNewsBeans.get(i);
 				 Content bean = new Content();
 				 ContentExt ext = new ContentExt();
-				 if(fundNewsBean.getAuthor()==null||fundNewsBean.getAuthor()==""){
+				 if(StringUtils.isBlank(fundNewsBean.getAuthor())){
 					 fundNewsBean.setAuthor("东方财富");
 				 }
-				 if(fundNewsBean.getFrom()==null||fundNewsBean.getFrom()==""){
+				 if(StringUtils.isBlank(fundNewsBean.getFrom())){
 					 fundNewsBean.setFrom("东方财富");
 				 }
 				 ext.setAuthor(fundNewsBean.getAuthor());
@@ -1003,11 +1003,11 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 ResearchBean researchBean = researchBeans.get(i);
 				 Content bean = new Content();
 				 ContentExt ext = new ContentExt();
-				 if (researchBean.getAuthorList().getAuth()==null||researchBean.getAuthorList().getAuth()=="") {
+				 if (StringUtils.isBlank(researchBean.getAuthorList().getAuth())) {
 					 researchBean.getAuthorList().setAuth("东方财富");;
 				 }
 				 ext.setAuthor(researchBean.getAuthorList().getAuth());
-				ext.setTitle(researchBean.getTitle());
+				 ext.setTitle(researchBean.getTitle());
 				 ext.setOrigin("东方财富");
 				 ext.setReleaseDate(researchBean.getDate());
 				 ContentTxt txt = new ContentTxt();
