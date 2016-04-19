@@ -80,7 +80,7 @@ public class UeditorAct {
 	//提示信息
 	private static final String TIP = "tip";
 	
-	@Value("${jeecms.article.attachment.path}")
+	@Value("${jeecms.article.content.attachment.path}")
 	private String path;
 	
 	@RequiresPermissions("ueditor:upload")

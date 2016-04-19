@@ -88,18 +88,15 @@ public class UeditorAct {
 	private static final String UE_SEPARATE_UE="ue_separate_ue";
 	//提示信息
 	private static final String TIP = "tip";
-	@RequestMapping(value = "/ueditor/upload.jspx",method = RequestMethod.POST)
-	public void upload(
-			@RequestParam(value = "Type", required = false) String typeStr,
-			Boolean mark,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	
+	@RequestMapping(value = "/ueditor/upload.jspx", method = RequestMethod.POST)
+	public void upload(@RequestParam(value = "Type", required = false) String typeStr, Boolean mark, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		responseInit(response);
 		if (Utils.isEmpty(typeStr)) {
 			typeStr = "File";
 		}
-		if(mark==null){
-			mark=false;
+		if (mark == null) {
+			mark = false;
 		}
 		JSONObject json = new JSONObject();
 		JSONObject ob = validateUpload(request, typeStr);
@@ -207,29 +204,24 @@ public class UeditorAct {
 		ResponseUtils.renderText(response, content);
 	}
 
-	private JSONObject doUpload(HttpServletRequest request, String typeStr,Boolean mark) throws Exception {
+	private JSONObject doUpload(HttpServletRequest request, String typeStr, Boolean mark) throws Exception {
 		ResourceType type = ResourceType.getDefaultResourceType(typeStr);
 		JSONObject result = new JSONObject();
 		try {
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			// We upload just one file at the same time
-			MultipartFile uplFile = multipartRequest.getFileMap().entrySet()
-					.iterator().next().getValue();
+			MultipartFile uplFile = multipartRequest.getFileMap().entrySet().iterator().next().getValue();
 			// Some browsers transfer the entire source path not just the
 			// filename
-			String filename = FilenameUtils.getName(uplFile
-					.getOriginalFilename());
+			String filename = FilenameUtils.getName(uplFile.getOriginalFilename());
 			log.debug("Parameter NewFile: {}", filename);
 			String ext = FilenameUtils.getExtension(filename);
 			if (type.isDeniedExtension(ext)) {
-				result.put(STATE, LocalizedMessages
-						.getInvalidFileTypeSpecified(request));
+				result.put(STATE, LocalizedMessages.getInvalidFileTypeSpecified(request));
 				return result;
 			}
-			if (type.equals(ResourceType.IMAGE)
-					&& !ImageUtils.isImage(uplFile.getInputStream())) {
-				result.put(STATE, LocalizedMessages
-						.getInvalidFileTypeSpecified(request));
+			if (type.equals(ResourceType.IMAGE) && !ImageUtils.isImage(uplFile.getInputStream())) {
+				result.put(STATE, LocalizedMessages.getInvalidFileTypeSpecified(request));
 				return result;
 			}
 			String fileUrl;
@@ -243,12 +235,10 @@ public class UeditorAct {
 			if (site.getConfig().getUploadToDb()) {
 				if (mark && isImg) {
 					File tempFile = mark(uplFile, conf);
-					fileUrl = dbFileMng.storeByExt(site.getUploadPath(), ext,
-							new FileInputStream(tempFile));
+					fileUrl = dbFileMng.storeByExt(site.getUploadPath(), ext, new FileInputStream(tempFile));
 					tempFile.delete();
 				} else {
-					fileUrl = dbFileMng.storeByExt(site.getUploadPath(), ext,
-							uplFile.getInputStream());
+					fileUrl = dbFileMng.storeByExt(site.getUploadPath(), ext, uplFile.getInputStream());
 				}
 				// 加上访问地址
 				String dbFilePath = site.getConfig().getDbFileUri();
@@ -257,31 +247,26 @@ public class UeditorAct {
 				Ftp ftp = site.getUploadFtp();
 				if (mark && isImg) {
 					File tempFile = mark(uplFile, conf);
-					fileUrl = ftp.storeByExt(site.getUploadPath(), ext,
-							new FileInputStream(tempFile));
+					fileUrl = ftp.storeByExt(site.getUploadPath(), ext, new FileInputStream(tempFile));
 					tempFile.delete();
 				} else {
-					fileUrl = ftp.storeByExt(site.getUploadPath(), ext, uplFile
-							.getInputStream());
+					fileUrl = ftp.storeByExt(site.getUploadPath(), ext, uplFile.getInputStream());
 				}
 				// 加上url前缀
 				fileUrl = ftp.getUrl() + fileUrl;
 			} else {
 				if (mark && isImg) {
 					File tempFile = mark(uplFile, conf);
-					fileUrl = fileRepository.storeByExt(site.getUploadPath(),
-							ext, tempFile);
+					fileUrl = fileRepository.storeByExt(site.getUploadPath(), ext, tempFile);
 					tempFile.delete();
 				} else {
-					fileUrl = fileRepository.storeByExt(site.getUploadPath(),
-							ext, uplFile);
+					fileUrl = fileRepository.storeByExt(site.getUploadPath(), ext, uplFile);
 				}
 				// 加上部署路径
 				fileUrl = request.getContextPath() + fileUrl;
 			}
-			cmsUserMng.updateUploadSize(user.getId(), Integer.parseInt(String
-					.valueOf(uplFile.getSize() / 1024)));
-			//需要给页面参数(参考ueditor的/jsp/imageUp.jsp)
+			cmsUserMng.updateUploadSize(user.getId(), Integer.parseInt(String.valueOf(uplFile.getSize() / 1024)));
+			// 需要给页面参数(参考ueditor的/jsp/imageUp.jsp)
 			result.put(STATE, SUCCESS);
 			result.put(URL, fileUrl);
 			result.put(ORIGINAL, filename);
@@ -289,8 +274,7 @@ public class UeditorAct {
 			result.put(FILETYPE, "." + ext);
 			return result;
 		} catch (IOException e) {
-			result.put(STATE, LocalizedMessages
-					.getFileUploadWriteError(request));
+			result.put(STATE, LocalizedMessages.getFileUploadWriteError(request));
 			return result;
 		}
 	}
@@ -377,6 +361,7 @@ public class UeditorAct {
 		return files;
 	}
 	
+	@SuppressWarnings("resource")
 	private  String saveRemoteImage(String imgUrl,String contextPath,String uploadPath) {
 		HttpClient client = new DefaultHttpClient();
 		String outFileName="";
