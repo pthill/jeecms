@@ -37,6 +37,7 @@ import com.jeecms.cms.entity.main.Content;
 import com.jeecms.cms.entity.main.ContentCheck;
 import com.jeecms.cms.entity.main.ContentDoc;
 import com.jeecms.cms.entity.main.ContentExt;
+import com.jeecms.cms.entity.main.ContentProduct;
 import com.jeecms.cms.entity.main.ContentTxt;
 import com.jeecms.cms.entity.main.ContentType;
 import com.jeecms.cms.entity.main.Content.ContentStatus;
@@ -463,7 +464,7 @@ public class ContentAct{
 
 	@RequiresPermissions("content:o_save")
 	@RequestMapping("/content/o_save.do")
-	public String save(Content bean, ContentExt ext, ContentTxt txt,ContentDoc doc,
+	public String save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
 			Boolean copyimg,Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds,
 			String[] attachmentPaths, String[] attachmentNames,
 			String[] attachmentFilenames, String[] picPaths, String[] picDescs,
@@ -489,7 +490,7 @@ public class ContentAct{
 		if(txt!=null&&copyimg!=null&&copyimg){
 			txt=copyContentTxtImg(txt, site);
 		}
-		bean = manager.save(bean, ext, txt, doc,channelIds, topicIds, viewGroupIds,
+		bean = manager.save(bean, ext,product, txt, doc,channelIds, topicIds, viewGroupIds,
 				tagArr, attachmentPaths, attachmentNames, attachmentFilenames,
 				picPaths, picDescs, channelId, typeId, draft,false, user, false);
 		//处理附件
@@ -508,7 +509,7 @@ public class ContentAct{
 	@RequestMapping("/content/o_update.do")
 	public String update(String queryStatus, Integer queryTypeId,
 			Boolean queryTopLevel, Boolean queryRecommend,
-			Integer queryOrderBy, Content bean, ContentExt ext, ContentTxt txt,ContentDoc doc,
+			Integer queryOrderBy, Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
 			Boolean copyimg,Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds,
 			String[] attachmentPaths, String[] attachmentNames,
 			String[] attachmentFilenames, String[] picPaths,String[] picDescs,
@@ -537,7 +538,7 @@ public class ContentAct{
 		if(txt!=null&&copyimg!=null&&copyimg){
 			txt=copyContentTxtImg(txt, site);
 		}
-		bean = manager.update(bean, ext, txt,doc, tagArr, channelIds, topicIds,
+		bean = manager.update(bean, ext,product, txt,doc, tagArr, channelIds, topicIds,
 				viewGroupIds, attachmentPaths, attachmentNames,
 				attachmentFilenames, picPaths, picDescs, attr, channelId,
 				typeId, draft, user, false);
@@ -754,6 +755,7 @@ public class ContentAct{
 				Content bean=manager.findById(contentId);
 				Content beanCopy= new Content();
 				ContentExt extCopy=new ContentExt();
+				ContentProduct productCopy=new ContentProduct();
 				ContentTxt txtCopy=new ContentTxt();
 				ContentDoc docCopy=null;
 				beanCopy=bean.cloneWithoutSet();
@@ -774,7 +776,7 @@ public class ContentAct{
 					docCopy=new ContentDoc();
 					BeanUtils.copyProperties(bean.getContentDoc(), docCopy);
 				}
-				manager.save(beanCopy, extCopy, txtCopy, docCopy, null,
+				manager.save(beanCopy, extCopy,productCopy, txtCopy, docCopy, null,
 						bean.getTopicIds(), bean.getViewGroupIds(), bean.getTagArray(), bean.getAttachmentPaths(), bean.getAttachmentNames(),
 						bean.getAttachmentFileNames(), bean.getPicPaths(), bean.getPicDescs(), channelId, bean.getType().getId(), draft,false, user, false);
 			}
@@ -1291,6 +1293,7 @@ public class ContentAct{
 		Content content=new Content();
 		ContentExt ext=new ContentExt();
 		ext.setTitle(title);
+		ContentProduct product = new ContentProduct();
 		ContentTxt t=new ContentTxt();
 		t.setTxt(txt);
 		if(typeId==null){
@@ -1301,7 +1304,7 @@ public class ContentAct{
 		}
 		content.setModel(cmsModelMng.findById(modelId));
 		content.setSite(CmsUtils.getSite(request));
-		manager.save(content, ext, t,null, channelId, typeId, draft,CmsUtils.getUser(request), false);
+		manager.save(content, ext,product, t,null, channelId, typeId, draft,CmsUtils.getUser(request), false);
 	}
 
 	private void addAttibuteForQuery(ModelMap model, String queryTitle,

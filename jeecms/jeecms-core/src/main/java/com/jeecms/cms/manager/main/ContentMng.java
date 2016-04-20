@@ -8,6 +8,7 @@ import com.jeecms.cms.entity.main.Content;
 import com.jeecms.cms.entity.main.Content.ContentStatus;
 import com.jeecms.cms.entity.main.ContentDoc;
 import com.jeecms.cms.entity.main.ContentExt;
+import com.jeecms.cms.entity.main.ContentProduct;
 import com.jeecms.cms.entity.main.ContentTxt;
 import com.jeecms.cms.staticpage.exception.ContentNotCheckedException;
 import com.jeecms.cms.staticpage.exception.GeneratedZeroStaticPageException;
@@ -126,17 +127,17 @@ public interface ContentMng {
 
 	public Content findById(Integer id);
 
-	public Content save(Content bean, ContentExt ext, ContentTxt txt,ContentDoc doc,
+	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
 			Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds,
 			String[] tagArr, String[] attachmentPaths,
 			String[] attachmentNames, String[] attachmentFilenames,
 			String[] picPaths, String[] picDescs, Integer channelId,
 			Integer typeId, Boolean draft,Boolean contribute, CmsUser user, boolean forMember);
 
-	public Content save(Content bean, ContentExt ext, ContentTxt txt,ContentDoc doc,
+	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
 			Integer channelId,Integer typeId, Boolean draft, CmsUser user, boolean forMember);
 
-	public Content update(Content bean, ContentExt ext, ContentTxt txt,ContentDoc doc,
+	public Content update(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
 			String[] tagArr, Integer[] channelIds, Integer[] topicIds,
 			Integer[] viewGroupIds, String[] attachmentPaths,
 			String[] attachmentNames, String[] attachmentFilenames,

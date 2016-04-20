@@ -18,6 +18,7 @@
 		<property name="upsDay" column="ups_day" type="java.lang.Short" not-null="true" length="5"/>
 		<property name="score" column="score" type="java.lang.Integer" not-null="true" length="11"/>
 		<one-to-one name="contentExt" class="ContentExt" cascade="delete"/>
+		<one-to-one name="contentProduct" class="ContentProduct" cascade="delete"/>
 		<one-to-one name="contentCount" class="ContentCount" cascade="delete"/>
 		<many-to-one name="type" column="type_id" class="ContentType" not-null="false"></many-to-one>
 		<many-to-one name="site" column="site_id" class="com.jeecms.core.entity.CmsSite" not-null="true"></many-to-one>

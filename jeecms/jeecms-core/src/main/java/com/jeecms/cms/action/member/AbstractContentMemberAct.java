@@ -18,6 +18,7 @@ import com.jeecms.cms.entity.main.CmsModel;
 import com.jeecms.cms.entity.main.Content;
 import com.jeecms.cms.entity.main.ContentDoc;
 import com.jeecms.cms.entity.main.ContentExt;
+import com.jeecms.cms.entity.main.ContentProduct;
 import com.jeecms.cms.entity.main.ContentTxt;
 import com.jeecms.cms.entity.main.ContentType;
 import com.jeecms.cms.manager.main.ChannelMng;
@@ -134,6 +135,7 @@ public class AbstractContentMemberAct {
 			c.setModel(defaultModel);
 		}
 		ContentExt ext = new ContentExt();
+		ContentProduct product = new ContentProduct();
 		ext.setTitle(title);
 		ext.setAuthor(author);
 		ext.setDescription(description);
@@ -147,7 +149,7 @@ public class AbstractContentMemberAct {
 		}
 		Integer typeId = type.getId();
 		String[] tagArr = StrUtils.splitAndTrim(tagStr, ",", null);
-		c = contentMng.save(c, ext, t,null, null, null, null, tagArr, attachmentPaths,attachmentNames, attachmentFilenames
+		c = contentMng.save(c, ext,product, t,null, null, null, null, tagArr, attachmentPaths,attachmentNames, attachmentFilenames
 				,picPaths,picDescs,channelId, typeId, null,true, user, true);
 		if(doc!=null){
 			contentDocMng.save(doc, c);
@@ -233,6 +235,7 @@ public class AbstractContentMemberAct {
 		c.setId(id);
 		c.setSite(site);
 		ContentExt ext = new ContentExt();
+		ContentProduct product = new ContentProduct();
 		ext.setId(id);
 		ext.setTitle(title);
 		ext.setAuthor(author);
@@ -243,7 +246,7 @@ public class AbstractContentMemberAct {
 		t.setId(id);
 		t.setTxt(txt);
 		String[] tagArr = StrUtils.splitAndTrim(tagStr, ",", null);
-		contentMng.update(c, ext, t,null, tagArr, null, null, null,  attachmentPaths,attachmentNames, attachmentFilenames
+		contentMng.update(c, ext,product, t,null, tagArr, null, null, null,  attachmentPaths,attachmentNames, attachmentFilenames
 				,picPaths,picDescs, null, channelId, null, null, user, true);
 		if(doc!=null){
 			contentDocMng.update(doc, c);

@@ -104,6 +104,7 @@
 	<bean id="contentTagMng" class="com.jeecms.cms.manager.main.impl.ContentTagMngImpl"/>
 	<bean id="contentTypeMng" class="com.jeecms.cms.manager.main.impl.ContentTypeMngImpl"/>
 	<bean id="contentExtMng" class="com.jeecms.cms.manager.main.impl.ContentExtMngImpl"/>
+	<bean id="contentProductMng" class="com.jeecms.cms.manager.main.impl.ContentProductMngImpl"/>
 	<bean id="contentTxtMng" class="com.jeecms.cms.manager.main.impl.ContentTxtMngImpl"/>
 	<bean id="contentCountMng" class="com.jeecms.cms.manager.main.impl.ContentCountMngImpl"/>
 	<bean id="contentCheckMng" class="com.jeecms.cms.manager.main.impl.ContentCheckMngImpl"/>
@@ -172,6 +173,7 @@
 	<bean id="contentTagDao" class="com.jeecms.cms.dao.main.impl.ContentTagDaoImpl"/>
 	<bean id="contentTypeDao" class="com.jeecms.cms.dao.main.impl.ContentTypeDaoImpl"/>
 	<bean id="contentExtDao" class="com.jeecms.cms.dao.main.impl.ContentExtDaoImpl"/>
+	<bean id="contentProductDao" class="com.jeecms.cms.dao.main.impl.ContentProductDaoImpl"/>
 	<bean id="contentTxtDao" class="com.jeecms.cms.dao.main.impl.ContentTxtDaoImpl"/>
 	<bean id="contentCountDao" class="com.jeecms.cms.dao.main.impl.ContentCountDaoImpl"/>
 	<bean id="contentCheckDao" class="com.jeecms.cms.dao.main.impl.ContentCheckDaoImpl"/>

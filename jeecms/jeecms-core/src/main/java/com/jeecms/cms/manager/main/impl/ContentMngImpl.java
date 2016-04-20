@@ -30,6 +30,7 @@ import com.jeecms.cms.entity.main.ContentCheck;
 import com.jeecms.cms.entity.main.ContentCount;
 import com.jeecms.cms.entity.main.ContentDoc;
 import com.jeecms.cms.entity.main.ContentExt;
+import com.jeecms.cms.entity.main.ContentProduct;
 import com.jeecms.cms.entity.main.ContentShareCheck;
 import com.jeecms.cms.entity.main.ContentTag;
 import com.jeecms.cms.entity.main.ContentTxt;
@@ -43,6 +44,7 @@ import com.jeecms.cms.manager.main.ContentCountMng;
 import com.jeecms.cms.manager.main.ContentDocMng;
 import com.jeecms.cms.manager.main.ContentExtMng;
 import com.jeecms.cms.manager.main.ContentMng;
+import com.jeecms.cms.manager.main.ContentProductMng;
 import com.jeecms.cms.manager.main.ContentShareCheckMng;
 import com.jeecms.cms.manager.main.ContentTagMng;
 import com.jeecms.cms.manager.main.ContentTxtMng;
@@ -198,8 +200,8 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	
 	
 	
-	public Content save(Content bean, ContentExt ext, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
-		saveContent(bean, ext, txt, doc, channelId, typeId, draft, contribute, user, forMember);
+	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
+		saveContent(bean, ext,product, txt, doc, channelId, typeId, draft, contribute, user, forMember);
 		// 保存副栏目
 		if (channelIds != null && channelIds.length > 0) {
 			for (Integer cid : channelIds) {
@@ -247,14 +249,14 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	}
 
 	// 导入word执行
-	public Content save(Content bean, ContentExt ext, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
-		saveContent(bean, ext, txt, doc, channelId, typeId, draft, false, user, forMember);
+	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
+		saveContent(bean, ext,product, txt, doc, channelId, typeId, draft, false, user, forMember);
 		// 执行监听器
 		afterSave(bean);
 		return bean;
 	}
 
-	private Content saveContent(Content bean, ContentExt ext, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
+	private Content saveContent(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
 		Channel channel = channelMng.findById(channelId);
 		bean.setChannel(channel);
 		bean.setType(contentTypeMng.findById(typeId));
@@ -290,6 +292,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		preSave(bean);
 		dao.save(bean);
 		contentExtMng.save(ext, bean);
+		contentProductMng.save(product, bean);
 		contentTxtMng.save(txt, bean);
 		if (doc != null) {
 			contentDocMng.save(doc, bean);
@@ -310,7 +313,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		return bean;
 	}
 
-	public Content update(Content bean, ContentExt ext, ContentTxt txt, ContentDoc doc, String[] tagArr, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Map<String, String> attr, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
+	public Content update(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, String[] tagArr, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Map<String, String> attr, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
 		Content entity = findById(bean.getId());
 		// 执行监听器
 		List<Map<String, Object>> mapList = preChange(entity);
@@ -366,6 +369,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		}
 		// 更新扩展表
 		contentExtMng.update(ext);
+		contentProductMng.update(product);
 		// 更新文本表
 		contentTxtMng.update(txt, bean);
 		// 更新文库表
@@ -843,6 +847,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 
 	private ChannelMng channelMng;
 	private ContentExtMng contentExtMng;
+	private ContentProductMng contentProductMng;
 	private ContentTxtMng contentTxtMng;
 	private ContentTypeMng contentTypeMng;
 	private ContentCountMng contentCountMng;
@@ -883,6 +888,11 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Autowired
 	public void setContentExtMng(ContentExtMng contentExtMng) {
 		this.contentExtMng = contentExtMng;
+	}
+
+	@Autowired
+	public void setContentProductMng(ContentProductMng contentProductMng) {
+		this.contentProductMng = contentProductMng;
 	}
 
 	@Autowired
@@ -966,6 +976,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 FundNewsBean fundNewsBean = fundNewsBeans.get(i);
 				 Content bean = new Content();
 				 ContentExt ext = new ContentExt();
+				 ContentProduct product = new ContentProduct();
 				 if(StringUtils.isBlank(fundNewsBean.getAuthor())){
 					 fundNewsBean.setAuthor("东方财富");
 				 }
@@ -985,7 +996,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 bean.setSite(site);
 				 bean.setModel(cmsModel);
 				 String[] tagArr = {};
-				 this.save(bean, ext, txt, doc, null, topicIds, null, tagArr,
+				 this.save(bean, ext,product, txt, doc, null, topicIds, null, tagArr,
 						 null, null, null, null, null, channelId, typeId, false,
 						 false, user, false);
 			 }
@@ -1003,6 +1014,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 ResearchBean researchBean = researchBeans.get(i);
 				 Content bean = new Content();
 				 ContentExt ext = new ContentExt();
+				 ContentProduct product = new ContentProduct();
 				 if (StringUtils.isBlank(researchBean.getAuthorList().getAuth())) {
 					 researchBean.getAuthorList().setAuth("东方财富");;
 				 }
@@ -1021,7 +1033,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 				 String[] attachmentPaths= {researchBean.getAttach().getUrl()};
 				 String[] attachmentNames = {researchBean.getAttach().getName()};
 				 String[] attachmentFilenames = {researchBean.getAttach().getName()};
-				 this.save(bean, ext, txt, doc,null, topicIds, null,
+				 this.save(bean, ext,product, txt, doc,null, topicIds, null,
 						 tagArr, attachmentPaths, attachmentNames, attachmentFilenames,
 						 null, null, channelId, typeId, false,false, user, false);
 			 }

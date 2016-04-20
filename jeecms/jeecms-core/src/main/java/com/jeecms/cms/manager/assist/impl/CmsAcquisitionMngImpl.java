@@ -14,6 +14,8 @@ import com.jeecms.cms.entity.assist.CmsAcquisitionTemp;
 import com.jeecms.cms.entity.assist.CmsAcquisition.AcquisitionResultType;
 import com.jeecms.cms.entity.main.Content;
 import com.jeecms.cms.entity.main.ContentExt;
+import com.jeecms.cms.entity.main.ContentPicture;
+import com.jeecms.cms.entity.main.ContentProduct;
 import com.jeecms.cms.entity.main.ContentTxt;
 import com.jeecms.cms.manager.assist.CmsAcquisitionHistoryMng;
 import com.jeecms.cms.manager.assist.CmsAcquisitionMng;
@@ -166,6 +168,7 @@ public class CmsAcquisitionMngImpl implements CmsAcquisitionMng,
 		c.setModel(modelMng.getDefModel());
 		c.setSortDate(releaseDate);
 		ContentExt cext = new ContentExt();
+		ContentProduct product = new ContentProduct();
 		ContentTxt ctxt = new ContentTxt();
 		cext.setAuthor(author);
 		cext.setOrigin(origin);
@@ -173,7 +176,7 @@ public class CmsAcquisitionMngImpl implements CmsAcquisitionMng,
 		cext.setTitle(title);
 		cext.setDescription(description);
 		ctxt.setTxt(txt);
-		Content content = contentMng.save(c, cext, ctxt,null, null, null, null,
+		Content content = contentMng.save(c, cext,product, ctxt,null, null, null, null,
 				null, null, null, null, null, null, acqu.getChannel().getId(),
 				acqu.getType().getId(), false,false, acqu.getUser(), false);
 		history.setTitle(title);

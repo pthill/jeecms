@@ -126,15 +126,18 @@ $(function() {
 	});
 	$(document).tooltip();
 	
-	 $("#description").keyup(function(){
-		 var area = $(this);
-		 var max = parseInt(area.attr("maxlength"), 10);
-		 var len= area.val().length;
+	$("#description").after('<div style="display:inline-block">已输入字数：<label id="srzs"></label><br/>最多允许字数：<label id="maxlen"></label></div>');
+	var len = parseInt($("#description").val().length);
+	var max = parseInt($("#description").attr("maxlength"), 10);
+	$("#srzs").text(len);
+	$("#maxlen").text(max);
+	$("#description").keyup(function(){
+		 var len= parseInt($(this).val().length);
 		 if(len<=max){
-			
+			$("#srzs").text(len);
 		 }
 		 
-	 });
+	});
 	
 });
 function appendChannels(channel) {
@@ -275,6 +278,7 @@ function uploadAttachSuccess(file,data) {
 		$("#attachmentNames"+index).val(attachName);
 	}
 }
+
 function draftContent(){
     $("#draft").val("true");
 	submitContent();
@@ -413,7 +417,7 @@ function submitContent(){
 
 <tr>
 	<td class="pn-flabel" width="10%"><@s.m "content.foundation"/></td>
-	<td colspan="3" class="pn-fcontent"><input type="text" style="width: 300px;"/><label>用","分开</label></td>
+	<td colspan="3" class="pn-fcontent"><input type="text" style="width: 500px;" id="productCode" name="productCode" maxlength="35"/><label>用","分开,最多输入5个</label></td>
 </tr>
 
 <#elseif item.field=="viewGroupIds">

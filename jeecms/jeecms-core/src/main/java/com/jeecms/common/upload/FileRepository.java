@@ -1,17 +1,14 @@
 package com.jeecms.common.upload;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileRepository implements ServletContextAware {
 	private Logger log = LoggerFactory.getLogger(FileRepository.class);
 
+	
+	@Value(value="${jeecms.workspace}")
+	private String workspace;
+	
+	
 	public String storeByExt(String path, String ext, MultipartFile file)
 			throws IOException {
 		String filename = UploadUtils.generateFilename(path, ext);
@@ -82,7 +84,7 @@ public class FileRepository implements ServletContextAware {
 //		if(realpath==null){
 //			realpath=ctx.getRealPath("/")+name;
 //		}
-		return getFilePath()+name;
+		return workspace+name;
 	}
 
 	private ServletContext ctx;
@@ -90,17 +92,5 @@ public class FileRepository implements ServletContextAware {
 	public void setServletContext(ServletContext servletContext) {
 		this.ctx = servletContext;
 	}
-	private String getFilePath() {
-		String dir = "";
-	     try {
-	    	 String path = ctx.getRealPath("/")+"WEB-INF\\classes\\application.properties";
-	    	 Properties propertie = new Properties();  
-	    	 InputStream in = new BufferedInputStream(new FileInputStream(path));
-	    	 propertie.load(in);
-	    	 dir = propertie.getProperty("jeecms.workspace");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	     return dir;
-	}
+	
 }

@@ -102,6 +102,19 @@ $(function() {
 		$("#articleFalse").attr("checked","checked");
 	}
 	
+	$("#description").after('<div style="display:inline-block">已输入字数：<label id="srzs"></label><br/>最多允许字数：<label id="maxlen"></label></div>');
+	var len = parseInt($("#description").val().length);
+	var max = parseInt($("#description").attr("maxlength"), 10);
+	$("#srzs").text(len);
+	$("#maxlen").text(max); 
+	$("#description").keyup(function(){
+		 var len= parseInt($(this).val().length);
+		 if(len<=max){
+			$("#srzs").text(len);
+		 }
+		 
+	});
+	
 });
 
 function appendChannels(channel) {
@@ -380,7 +393,7 @@ function submitContent(){
 <@p.text value=content.tagStr maxlength="50" size="${item.size!35}" help="${h}" helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
 
 <#elseif item.field=="description">
-<@p.textarea value=content.description cols="${item.cols!70}" rows="${item.rows!3}" maxlength="2048" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
+<@p.textarea value=content.description cols="${item.cols!70}" rows="${item.rows!3}" maxlength="2048" help=item.help helpPosition="${item.helpPosition!2}" label=item.label name=item.field id=item.field colspan=item.single?string("2","1") width="${item.single?string(100,50)}"/>
 
 <#elseif item.field=="author">
 <@p.td required="true" help=item.help helpPosition="${item.helpPosition!2}" label=item.label colspan=item.single?string("2","1") width="${item.single?string(100,50)}">
@@ -392,6 +405,11 @@ function submitContent(){
 <@p.text name=item.field value=content.origin class="required" maxlength="100" style="width:70px"/> &nbsp;
 <@s.m "content.originUrl"/>: <input type="text" name="originUrl" value="${content.originUrl!}" maxlength="255" style="width:100px"/>
 </@p.td>
+
+<tr>
+	<td class="pn-flabel" width="10%"><@s.m "content.foundation"/></td>
+	<td colspan="3" class="pn-fcontent"><input type="text" style="width: 300px;"  id="productCode" name="productCode" value="${(content.contentProduct.productCode)!''}"/><label>用","分开,最多输入5个</label></td>
+</tr>
 
 <#elseif item.field=="viewGroupIds">
 <#assign h><#if item.help??>${item.help}<#else><@s.m "content."+item.field+".help"/></#if></#assign>

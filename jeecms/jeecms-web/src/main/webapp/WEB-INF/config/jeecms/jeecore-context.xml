@@ -46,6 +46,7 @@
 	<bean id="html_cut" class="com.jeecms.common.web.freemarker.HtmlCutDirective"/>
 	
 	<bean id="realPathResolver" class="com.jeecms.common.web.springmvc.ServletContextRealPathResolver"/>
+	
 	<bean id="fileRepository" class="com.jeecms.common.upload.FileRepository"/>
 	<!--文件模板-->
 	<bean id="tplManager" class="com.jeecms.core.tpl.FileTplManagerImpl"/>

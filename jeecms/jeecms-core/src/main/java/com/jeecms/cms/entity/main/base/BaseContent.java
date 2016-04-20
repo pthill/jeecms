@@ -25,6 +25,7 @@ public abstract class BaseContent  implements Serializable {
 	public static String PROP_TOP_LEVEL = "topLevel";
 	public static String PROP_COMMENTS_DAY = "commentsDay";
 	public static String PROP_CONTENT_EXT = "contentExt";
+	public static String PROP_CONTENT_PRODUCT = "contentProduct";
 	public static String PROP_VIEWS_DAY = "viewsDay";
 	public static String PROP_UPS_DAY = "upsDay";
 	public static String PROP_CHANNEL = "channel";
@@ -99,6 +100,7 @@ public abstract class BaseContent  implements Serializable {
 
 	// one to one
 	private com.jeecms.cms.entity.main.ContentExt contentExt;
+	private com.jeecms.cms.entity.main.ContentProduct contentProduct;
 	private com.jeecms.cms.entity.main.ContentCount contentCount;
 
 	// many to one
@@ -349,6 +351,20 @@ public abstract class BaseContent  implements Serializable {
 		this.contentExt = contentExt;
 	}
 
+	/**
+	 * Return the value associated with the column: contentProduct
+	 */
+	public com.jeecms.cms.entity.main.ContentProduct getContentProduct () {
+		return contentProduct;
+	}
+	
+	/**
+	 * Set the value related to the column: contentProduct
+	 * @param contentProduct the contentProduct value
+	 */
+	public void setContentProduct (com.jeecms.cms.entity.main.ContentProduct contentProduct) {
+		this.contentProduct = contentProduct;
+	}
 
 	/**
 	 * Return the value associated with the column: contentCount
