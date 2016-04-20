@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class FileAct{
 	
-	@Value(value="${jeecms.workspace}")
+	@Value(value="${com.fcn.phoenix.workspace}")
 	private String workspace;
 	
 	@Value(value="${jeecms.article.content.attachment.path}")

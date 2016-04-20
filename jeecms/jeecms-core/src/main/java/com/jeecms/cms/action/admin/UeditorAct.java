@@ -276,7 +276,7 @@ public class UeditorAct {
 							ext, uplFile);
 				}
 				// 加上部署路径
-				fileUrl = request.getContextPath() + fileUrl;
+//				fileUrl = request.getContextPath() + fileUrl;
 			}
 			cmsUserMng.updateUploadSize(user.getId(), Integer.parseInt(String
 					.valueOf(uplFile.getSize() / 1024)));

@@ -19,7 +19,7 @@ public class FileRepository implements ServletContextAware {
 	private Logger log = LoggerFactory.getLogger(FileRepository.class);
 
 	
-	@Value(value="${jeecms.workspace}")
+	@Value(value="${com.fcn.phoenix.workspace}")
 	private String workspace;
 	
 	
