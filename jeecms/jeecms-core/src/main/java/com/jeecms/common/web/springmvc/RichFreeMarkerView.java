@@ -4,11 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.Hibernate;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
-
-import com.jeecms.core.entity.CmsConfig;
-import com.jeecms.core.web.util.CmsUtils;
 
 
 /**

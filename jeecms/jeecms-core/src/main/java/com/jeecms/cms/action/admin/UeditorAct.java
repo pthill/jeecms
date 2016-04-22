@@ -275,6 +275,7 @@ public class UeditorAct {
 					fileUrl = fileRepository.storeByExt(path,
 							ext, uplFile);
 				}
+				fileUrl = fileUrl.substring(1, fileUrl.length());
 				// 加上部署路径
 //				fileUrl = request.getContextPath() + fileUrl;
 			}

@@ -206,9 +206,8 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>JeeCmsFront</servlet-name>
-		<url-pattern>/article/*</url-pattern>
+		<url-pattern>/jeeadmin/jeecms/content/article/*</url-pattern>
 	</servlet-mapping>
-	
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

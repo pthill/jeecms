@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class FileAct{
 	
@@ -21,7 +22,7 @@ public class FileAct{
 	@Value(value="${jeecms.article.content.attachment.path}")
 	private String articleContentAttachmentPath;
 	
-	@RequestMapping(value = "content/attachment/{date}/{filename}.{ext}")
+	@RequestMapping(value = "content/attachment/{date}/{filename}.{ext}",method=RequestMethod.GET)
 	public void getAttachment(@PathVariable(value = "date") String date, @PathVariable(value = "filename") String filename, @PathVariable(value = "ext") String ext, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		FileInputStream fis = null;
 		if ("jpg".equals(ext) || "png".equals(ext) || "gif".equals(ext)) {
