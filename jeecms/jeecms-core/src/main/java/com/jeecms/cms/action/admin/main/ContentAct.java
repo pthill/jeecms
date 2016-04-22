@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +86,10 @@ import com.jeecms.core.web.util.CoreUtils;
 
 @Controller
 public class ContentAct{
+	
+	@Value("${ifast-fe-article-preview-details-path}")
+	private String ifastFeArticlePreviewDetailsPath;
+	
 	private static final Logger log = LoggerFactory.getLogger(ContentAct.class);
 
 	@RequiresPermissions("content:v_left")
@@ -240,6 +245,7 @@ public class ContentAct{
 		model.addAttribute("currStep", currStep);
 		model.addAttribute("site", site);
 		model.addAttribute("models", models);
+		model.addAttribute("fePath",ifastFeArticlePreviewDetailsPath);
 		addAttibuteForQuery(model, queryTitle, queryInputUsername,queryInputOrigin, queryStatus,
 				queryTypeId, queryTopLevel, queryRecommend, queryOrderBy,
 				pageNo);

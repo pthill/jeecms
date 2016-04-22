@@ -502,7 +502,7 @@ function optUnPigeonhole() {
 		<#if content.topLevel gt 0><span style="color:#6da807">[<@s.m "content.topLevel.short"/>${content.topLevel}]</span></#if>
 		<#if content.recommend><span style="color:#6da807">[<@s.m "content.recommend.short"/>]</span></#if>
 		<strong>[${content.channel.name}]</strong>
-		<a href="${content.url}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
+		<a href="${fePath!}${content.id}" target="_blank"><@text_cut s=content.title?html len=25 append="..."/></a>
 		<#if content.checkOpinion??>
 		<br/><span style="color:#6da807">${content.checkOpinion}</span>
 		</#if>
