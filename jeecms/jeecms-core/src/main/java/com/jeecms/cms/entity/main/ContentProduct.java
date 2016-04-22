@@ -13,8 +13,8 @@ public class ContentProduct extends BaseContentProduct {
 	}
 	
 	public void blankToNull() {
-		if (StringUtils.isBlank(getProductCode())) {
-			setProductCode(null);
+		if (StringUtils.isBlank(getProductCodes())) {
+			setProductCodes(null);
 		}
 	}
 	
@@ -35,11 +35,11 @@ public class ContentProduct extends BaseContentProduct {
 	 */
 	public ContentProduct (
 		java.lang.Integer id,
-		java.lang.String productCode) {
+		java.lang.String productCodes) {
 
 		super (
 			id,
-			productCode);
+			productCodes);
 	}
 
 	/* [CONSTRUCTOR MARKER END] */

@@ -16,7 +16,7 @@ public abstract class BaseContentProduct implements Serializable{
 	private static final long serialVersionUID = 7965823950023635689L;
 	
 	public static String REF = "ContentProduct";
-	public static String PROP_PRODUCT_CODE = "productCode";
+	public static String PROP_PRODUCT_CODES = "productCodes";
 	
 	// constructors
 		public BaseContentProduct () {
@@ -36,10 +36,10 @@ public abstract class BaseContentProduct implements Serializable{
 		 */
 		public BaseContentProduct (
 			java.lang.Integer id,
-			java.lang.String productCode) {
+			java.lang.String productCodes) {
 
 			this.setId(id);
-			this.setProductCode(productCode);
+			this.setProductCodes(productCodes);
 			initialize();
 		}
 
@@ -53,7 +53,7 @@ public abstract class BaseContentProduct implements Serializable{
 		private java.lang.Integer id;
 	
 		// fields
-		private java.lang.String productCode;
+		private java.lang.String productCodes;
 		
 		// one to one
 		private com.jeecms.cms.entity.main.Content content;
@@ -79,16 +79,16 @@ public abstract class BaseContentProduct implements Serializable{
 		/**
 		 * Return the value associated with the column: productCode
 		 */
-		public java.lang.String getProductCode () {
-			return productCode;
+		public java.lang.String getProductCodes () {
+			return productCodes;
 		}
 
 		/**
 		 * Set the value related to the column: productCode
 		 * @param title the title value
 		 */
-		public void setProductCode (java.lang.String productCode) {
-			this.productCode = productCode;
+		public void setProductCodes (java.lang.String productCodes) {
+			this.productCodes = productCodes;
 		}
 		
 		/**

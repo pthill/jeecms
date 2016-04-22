@@ -7,7 +7,7 @@
 		<id name="id" type="java.lang.Integer" column="content_id">
 			<generator class="foreign"><param name="property">content</param></generator>
 		</id>
-		<property name="productCode" column="product_code" type="string" length="150"/>
+		<property name="productCodes" column="product_codes" type="string" length="150"/>
 		<one-to-one name="content" class="Content" constrained="true"/>
 	</class>
 </hibernate-mapping>
