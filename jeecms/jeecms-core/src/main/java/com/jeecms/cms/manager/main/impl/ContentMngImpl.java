@@ -79,7 +79,7 @@ import freemarker.template.TemplateException;
 @Transactional
 public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	@Transactional(readOnly = true)
-	public Pagination getPageByRight(String title,String origin,Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize) {
+	public Pagination getPageByRight(String title, String origin, Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize) {
 		CmsUser user = cmsUserMng.findById(userId);
 		CmsUserSite us = user.getUserSite(siteId);
 		Pagination p;
@@ -91,22 +91,22 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		}
 		if (allChannel && selfData) {
 			// 拥有所有栏目权限，只能管理自己的数据
-			p = dao.getPageBySelf(title,origin, typeId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, userId, orderBy, pageNo, pageSize);
+			p = dao.getPageBySelf(title, origin, typeId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, userId, orderBy, pageNo, pageSize);
 		} else if (allChannel && !selfData) {
 			// 拥有所有栏目权限，能够管理不属于自己的数据
-			p = dao.getPage(title,origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, null, null, orderBy, pageNo, pageSize);
+			p = dao.getPage(title, origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, null, channelId, null, null, orderBy, pageNo, pageSize);
 		} else {
-			p = dao.getPageByRight(title,origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, departId, userId, selfData, orderBy, pageNo, pageSize);
+			p = dao.getPageByRight(title, origin, typeId, currUserId, inputUserId, topLevel, recommend, status, checkStep, siteId, channelId, departId, userId, selfData, orderBy, pageNo, pageSize);
 		}
 		return p;
 	}
 
 	public Pagination getPageBySite(String title, Integer typeId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Integer siteId, int orderBy, int pageNo, int pageSize) {
-		return dao.getPage(title,null, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, null, null, orderBy, pageNo, pageSize);
+		return dao.getPage(title, null, typeId, null, inputUserId, topLevel, recommend, status, null, siteId, null, null, null, null, orderBy, pageNo, pageSize);
 	}
 
 	public Pagination getPageForMember(String title, Integer channelId, Integer siteId, Integer modelId, Integer memberId, int pageNo, int pageSize) {
-		return dao.getPage(title,null, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, null, null, 0, pageNo, pageSize);
+		return dao.getPage(title, null, null, memberId, memberId, false, false, ContentStatus.all, null, siteId, modelId, channelId, null, null, 0, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
@@ -197,11 +197,8 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		return entity;
 	}
 
-	
-	
-	
-	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
-		saveContent(bean, ext,product, txt, doc, channelId, typeId, draft, contribute, user, forMember);
+	public Content save(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
+		saveContent(bean, ext, product, txt, doc, channelId, typeId, draft, contribute, user, forMember);
 		// 保存副栏目
 		if (channelIds != null && channelIds.length > 0) {
 			for (Integer cid : channelIds) {
@@ -249,14 +246,14 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 	}
 
 	// 导入word执行
-	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
-		saveContent(bean, ext,product, txt, doc, channelId, typeId, draft, false, user, forMember);
+	public Content save(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
+		saveContent(bean, ext, product, txt, doc, channelId, typeId, draft, false, user, forMember);
 		// 执行监听器
 		afterSave(bean);
 		return bean;
 	}
 
-	private Content saveContent(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
+	private Content saveContent(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember) {
 		Channel channel = channelMng.findById(channelId);
 		bean.setChannel(channel);
 		bean.setType(contentTypeMng.findById(typeId));
@@ -313,7 +310,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		return bean;
 	}
 
-	public Content update(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt, ContentDoc doc, String[] tagArr, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Map<String, String> attr, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
+	public Content update(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, String[] tagArr, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Map<String, String> attr, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember) {
 		Content entity = findById(bean.getId());
 		// 执行监听器
 		List<Map<String, Object>> mapList = preChange(entity);
@@ -950,96 +947,94 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		this.staticPageSvc = staticPageSvc;
 	}
 
-	@Transactional(readOnly=true)
-	public Byte getCheckStep() {
-		CmsUser user = cmsUserMng.findById(1);
-		CmsSite site = cmsSiteMng.findById(1);
-		return user.getCheckStep(site.getId());
-	}
 	@Autowired
 	private CmsSiteMng cmsSiteMng;
-	
-	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId, int pageNo, int pageSize){
-		return dao.getMaxReleaseDate(currUserId, inputUserId, status, checkStep, siteId, channelId, pageNo, pageSize);
+
+	public Content getMaxReleaseDate(Integer inputUserId, List<ContentStatus> status, Integer siteId, Integer channelId) {
+		return dao.getMaxReleaseDate(inputUserId, status, siteId, channelId);
 	}
-	
+
 	public void saveFundNews(Map<String, List<FundNewsBean>> map) {
 		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		CmsSite site = cmsSiteMng.findById(1);
 		CmsModel cmsModel = cmsModelMng.findById(1);
-		
-		for(Entry<String,List<FundNewsBean>> e: map.entrySet()){
-			 Integer channelId = Integer.valueOf(e.getKey());	
-			 List<FundNewsBean> fundNewsBeans = e.getValue();
-			 for (int i = 0; i < fundNewsBeans.size(); i++) {
-				 FundNewsBean fundNewsBean = fundNewsBeans.get(i);
-				 Content bean = new Content();
-				 ContentExt ext = new ContentExt();
-				 ContentProduct product = new ContentProduct();
-				 if(StringUtils.isBlank(fundNewsBean.getAuthor())){
-					 fundNewsBean.setAuthor("东方财富");
-				 }
-				 if(StringUtils.isBlank(fundNewsBean.getFrom())){
-					 fundNewsBean.setFrom("东方财富");
-				 }
-				 ext.setAuthor(fundNewsBean.getAuthor());
-				 ext.setOrigin(fundNewsBean.getFrom());
-				 ext.setTitle(fundNewsBean.getTitle());
-				 ext.setReleaseDate(fundNewsBean.getDate());
-				 ext.setDescription(fundNewsBean.getDocreader());
-				 ContentTxt txt = new ContentTxt();
-				 txt.setTxt(fundNewsBean.getText());
-				 ContentDoc doc = new ContentDoc();
-				 Integer[] topicIds = {0};
-				 Integer typeId = 1;
-				 bean.setSite(site);
-				 bean.setModel(cmsModel);
-				 String[] tagArr = {};
-				 this.save(bean, ext,product, txt, doc, null, topicIds, null, tagArr,
-						 null, null, null, null, null, channelId, typeId, false,
-						 false, user, false);
-			 }
+
+		for (Entry<String, List<FundNewsBean>> e : map.entrySet()) {
+			Integer channelId = Integer.valueOf(e.getKey());
+			List<FundNewsBean> fundNewsBeans = e.getValue();
+			for (int i = 0; i < fundNewsBeans.size(); i++) {
+				FundNewsBean fundNewsBean = fundNewsBeans.get(i);
+				Content bean = new Content();
+				ContentExt ext = new ContentExt();
+				ContentProduct product = new ContentProduct();
+				if (StringUtils.isBlank(fundNewsBean.getAuthor())) {
+					fundNewsBean.setAuthor("东方财富");
+				}
+				if (StringUtils.isBlank(fundNewsBean.getFrom())) {
+					fundNewsBean.setFrom("东方财富");
+				}
+				ext.setAuthor(fundNewsBean.getAuthor());
+				ext.setOrigin(fundNewsBean.getFrom());
+				ext.setTitle(fundNewsBean.getTitle());
+				ext.setReleaseDate(fundNewsBean.getDate());
+				ext.setDescription(fundNewsBean.getDocreader());
+				ContentTxt txt = new ContentTxt();
+				txt.setTxt(fundNewsBean.getText());
+				ContentDoc doc = new ContentDoc();
+				Integer[] topicIds = {0};
+				Integer typeId = 1;
+				bean.setSite(site);
+				bean.setModel(cmsModel);
+				String[] tagArr = {};
+				this.save(bean, ext, product, txt, doc, null, topicIds, null, tagArr, null, null, null, null, null, channelId, typeId, false, false, user, false);
+			}
 		}
 	}
-	
-	public void saveResearchs(Map<String, List<ResearchBean>> map){
+
+	public void saveResearchs(Map<String, List<ResearchBean>> map) {
 		CmsUser user = cmsUserMng.findByUsername(USER_NAME);
 		CmsSite site = cmsSiteMng.findById(1);
 		CmsModel cmsModel = cmsModelMng.findById(1);
-		for(Entry<String,List<ResearchBean>> e: map.entrySet()){
-			 Integer channelId = Integer.valueOf(e.getKey());
-			 List<ResearchBean> researchBeans = e.getValue();
-			 for (int i = 0; i < researchBeans.size(); i++) {
-				 ResearchBean researchBean = researchBeans.get(i);
-				 Content bean = new Content();
-				 ContentExt ext = new ContentExt();
-				 ContentProduct product = new ContentProduct();
-				 if (StringUtils.isBlank(researchBean.getAuthorList().getAuth())) {
-					 researchBean.getAuthorList().setAuth("东方财富");;
-				 }
-				 ext.setAuthor(researchBean.getAuthorList().getAuth());
-				 ext.setTitle(researchBean.getTitle());
-				 ext.setOrigin("东方财富");
-				 ext.setReleaseDate(researchBean.getDate());
-				 ContentTxt txt = new ContentTxt();
-				 txt.setTxt(researchBean.getText());
-				 ContentDoc doc = new ContentDoc();
-				 Integer[] topicIds={0};
-				 Integer typeId = 1;
-				 bean.setSite(site);
-				 bean.setModel(cmsModel);
-				 String[] tagArr = {};
-				 String[] attachmentPaths= {researchBean.getAttach().getUrl()};
-				 String[] attachmentNames = {researchBean.getAttach().getName()};
-				 String[] attachmentFilenames = {researchBean.getAttach().getName()};
-				 this.save(bean, ext,product, txt, doc,null, topicIds, null,
-						 tagArr, attachmentPaths, attachmentNames, attachmentFilenames,
-						 null, null, channelId, typeId, false,false, user, false);
-			 }
+		for (Entry<String, List<ResearchBean>> e : map.entrySet()) {
+			Integer channelId = Integer.valueOf(e.getKey());
+			List<ResearchBean> researchBeans = e.getValue();
+			for (int i = 0; i < researchBeans.size(); i++) {
+				ResearchBean researchBean = researchBeans.get(i);
+				Content bean = new Content();
+				ContentExt ext = new ContentExt();
+				ContentProduct product = new ContentProduct();
+				if (StringUtils.isBlank(researchBean.getAuthorList().getAuth())) {
+					researchBean.getAuthorList().setAuth("东方财富");;
+				}
+				ext.setAuthor(researchBean.getAuthorList().getAuth());
+				ext.setTitle(researchBean.getTitle());
+				ext.setOrigin("东方财富");
+				ext.setReleaseDate(researchBean.getDate());
+				ContentTxt txt = new ContentTxt();
+				txt.setTxt(researchBean.getText());
+				ContentDoc doc = new ContentDoc();
+				Integer[] topicIds = {0};
+				Integer typeId = 1;
+				bean.setSite(site);
+				bean.setModel(cmsModel);
+				String[] tagArr = {};
+				String[] attachmentPaths = {researchBean.getAttach().getUrl()};
+				String[] attachmentNames = {researchBean.getAttach().getName()};
+				String[] attachmentFilenames = {researchBean.getAttach().getName()};
+				this.save(bean, ext, product, txt, doc, null, topicIds, null, tagArr, attachmentPaths, attachmentNames, attachmentFilenames, null, null, channelId, typeId, false, false, user, false);
+			}
 		}
 	}
-	
+
 	private final static String USER_NAME = "system";
-	
+
+	@Override
+	public Content deleteByUser(Integer userId) {
+		List<Content> lists = dao.getListByUser(userId);
+		for (int i = 0; i < lists.size(); i++) {
+			dao.deleteById(lists.get(i).getId());
+		}
+		return null;
+	}
+
 }

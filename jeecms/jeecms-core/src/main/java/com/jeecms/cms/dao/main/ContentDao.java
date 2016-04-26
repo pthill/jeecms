@@ -67,10 +67,7 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPage(String title,String origin, Integer typeId,Integer currUserId,
-			Integer inputUserId, boolean topLevel, boolean recommend,
-			ContentStatus status, Byte checkStep, Integer siteId,Integer modelId,
-			Integer channelId,Date releaseStartDate, Date releaseEndDate,int orderBy, int pageNo, int pageSize);
+	public Pagination getPage(String title, String origin, Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer modelId, Integer channelId, Date releaseStartDate, Date releaseEndDate, int orderBy, int pageNo, int pageSize);
 
 	/**
 	 * 获得自己发布的内容列表
@@ -101,11 +98,7 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPageBySelf(String title,String origin, Integer typeId,
-			Integer inputUserId, boolean topLevel, boolean recommend,
-			ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId,Integer userId, int orderBy, int pageNo,
-			int pageSize);
+	public Pagination getPageBySelf(String title, String origin, Integer typeId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize);
 
 	/**
 	 * 获得有权限的内容列表
@@ -138,15 +131,11 @@ public interface ContentDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination getPageByRight(String title,String origin, Integer typeId,Integer currUserId,
-			Integer inputUserId, boolean topLevel, boolean recommend,
-			ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId,Integer departId,Integer userId, boolean selfData, int orderBy,
-			int pageNo, int pageSize);
-	
-	public List<Content> getExpiredTopLevelContents(byte topLevel,Date expiredDay);
-	
-	public  List<Content> getPigeonholeContents(Date pigeonholeDay);
+	public Pagination getPageByRight(String title, String origin, Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer departId, Integer userId, boolean selfData, int orderBy, int pageNo, int pageSize);
+
+	public List<Content> getExpiredTopLevelContents(byte topLevel, Date expiredDay);
+
+	public List<Content> getPigeonholeContents(Date pigeonholeDay);
 
 	/**
 	 * 获得一篇内容的上一篇或下一篇内容
@@ -163,8 +152,7 @@ public interface ContentDao {
 	 *            是否使用缓存。
 	 * @return
 	 */
-	public Content getSide(Integer id, Integer siteId, Integer channelId,
-			boolean next, boolean cacheable);
+	public Content getSide(Integer id, Integer siteId, Integer channelId, boolean next, boolean cacheable);
 
 	/**
 	 * 根据内容ID数组获取内容列表
@@ -175,52 +163,26 @@ public interface ContentDao {
 	 */
 	public List<Content> getListByIdsForTag(Integer[] ids, int orderBy);
 
-	public Pagination getPageBySiteIdsForTag(Integer[] siteIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open, Map<String,String[]>attr,int orderBy, int pageNo, int pageSize);
+	public Pagination getPageBySiteIdsForTag(Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListBySiteIdsForTag(Integer[] siteIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open,Map<String,String[]>attr, int orderBy, Integer first, Integer count);
+	public List<Content> getListBySiteIdsForTag(Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByChannelIdsForTag(Integer[] channelIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open,Map<String,String[]>attr, int orderBy, int option, int pageNo, int pageSize);
+	public Pagination getPageByChannelIdsForTag(Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int option, int pageNo, int pageSize);
 
-	public List<Content> getListByChannelIdsForTag(Integer[] channelIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open, Map<String,String[]>attr, int orderBy, int option,Integer first, Integer count);
+	public List<Content> getListByChannelIdsForTag(Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int option, Integer first, Integer count);
 
-	public Pagination getPageByChannelPathsForTag(String[] paths,
-			Integer[] siteIds, Integer[] typeIds, Boolean titleImg,
-			Boolean recommend, String title,int open,Map<String,String[]>attr, int orderBy, int pageNo,
-			int pageSize);
+	public Pagination getPageByChannelPathsForTag(String[] paths, Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByChannelPathsForTag(String[] paths,
-			Integer[] siteIds, Integer[] typeIds, Boolean titleImg,
-			Boolean recommend, String title,int open, Map<String,String[]>attr,int orderBy, Integer first,
-			Integer count);
+	public List<Content> getListByChannelPathsForTag(String[] paths, Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByTopicIdForTag(Integer topicId,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Boolean titleImg, Boolean recommend, String title, int open,Map<String,String[]>attr,int orderBy,
-			int pageNo, int pageSize);
+	public Pagination getPageByTopicIdForTag(Integer topicId, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByTopicIdForTag(Integer topicId,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Boolean titleImg, Boolean recommend, String title, int open,Map<String,String[]>attr,int orderBy,
-			Integer first, Integer count);
+	public List<Content> getListByTopicIdForTag(Integer topicId, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByTagIdsForTag(Integer[] tagIds,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Integer excludeId, Boolean titleImg, Boolean recommend,
-			String title, int open,Map<String,String[]>attr,int orderBy, int pageNo, int pageSize);
+	public Pagination getPageByTagIdsForTag(Integer[] tagIds, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Integer excludeId, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByTagIdsForTag(Integer[] tagIds,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Integer excludeId, Boolean titleImg, Boolean recommend,
-			String title,int open, Map<String,String[]>attr,int orderBy, Integer first, Integer count);
-	
+	public List<Content> getListByTagIdsForTag(Integer[] tagIds, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Integer excludeId, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
+
 	public Pagination getPageForCollection(Integer siteId, Integer memberId, int pageNo, int pageSize);
 
 	public int countByChannelId(int channelId);
@@ -232,6 +194,6 @@ public interface ContentDao {
 	public Content updateByUpdater(Updater<Content> updater);
 
 	public Content deleteById(Integer id);
-	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId, int pageNo, int pageSize);
+	public Content getMaxReleaseDate(Integer inputUserId, List<ContentStatus> status, Integer siteId, Integer channelId);
+	public List<Content> getListByUser(Integer userId);
 }

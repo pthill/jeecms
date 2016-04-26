@@ -19,19 +19,25 @@ public class ResearchJob extends CollectJob {
 
 	private static final String[] CHANNELS_PATH = {"T004005001", "T004005002"};
 	private static final Logger logger = LoggerFactory.getLogger(ResearchJob.class);
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({})
 	public void runJob() {
 		final List<Channel> cList = channelMng.findByPathsAndSitedId(CHANNELS_PATH, siteId);
 
 		final Map<String, List<ResearchBean>> map = new HashMap<String, List<ResearchBean>>();
 		for (final Channel channel : cList) {
 			List<ResearchBean> researchBeans = new ArrayList<ResearchBean>();
-			List<Content> contents = (List<Content>) contentMng.getMaxReleaseDate(user.getId(), user.getId(), ContentStatus.all, contentMng.getCheckStep(), siteId, channel.getId(), 1, 1).getList();
+			List<ContentStatus> lists = new ArrayList<Content.ContentStatus>();
+			lists.add(ContentStatus.checked);
+			lists.add(ContentStatus.passed);
+			lists.add(ContentStatus.prepared);
+			lists.add(ContentStatus.rejected);
+			lists.add(ContentStatus.recycle);
+			Content content =  contentMng.getMaxReleaseDate(user.getId(), lists, siteId, channel.getId());
 			String title = "";
 			Long time = 0L;
-			if (contents.size() > 0) {
-				title = contents.get(0).getTitle();
-				time = contents.get(0).getReleaseDate().getTime();
+			if (content!=null) {
+				title = content.getTitle();
+				time = content.getReleaseDate().getTime();
 			}
 			for (int j = 1; j < PAGE; j++) {
 				try {

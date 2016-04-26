@@ -21,15 +21,9 @@ import com.jeecms.dfcf.model.FundNewsBean;
 import com.jeecms.dfcf.model.ResearchBean;
 
 public interface ContentMng {
-	public Pagination getPageByRight(String title,String origin , Integer typeId,Integer currUserId,
-			Integer inputUserId, boolean topLevel, boolean recommend,
-			ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId,Integer userId, int orderBy, int pageNo,
-			int pageSize);
-	
-	
-	public Pagination getPageBySite(String title, Integer typeId,Integer inputUserId,boolean topLevel,
-			boolean recommend,ContentStatus status, Integer siteId,int orderBy, int pageNo,int pageSize);
+	public Pagination getPageByRight(String title, String origin, Integer typeId, Integer currUserId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Byte checkStep, Integer siteId, Integer channelId, Integer userId, int orderBy, int pageNo, int pageSize);
+
+	public Pagination getPageBySite(String title, Integer typeId, Integer inputUserId, boolean topLevel, boolean recommend, ContentStatus status, Integer siteId, int orderBy, int pageNo, int pageSize);
 
 	/**
 	 * 获得文章分页。供会员中心使用。
@@ -48,9 +42,7 @@ public interface ContentMng {
 	 *            每页大小
 	 * @return 文章分页对象
 	 */
-	public Pagination getPageForMember(String title, Integer channelId,
-			Integer siteId, Integer modelId,Integer memberId, int pageNo, int pageSize);
-	
+	public Pagination getPageForMember(String title, Integer channelId, Integer siteId, Integer modelId, Integer memberId, int pageNo, int pageSize);
 
 	/**
 	 * 根据内容ID数组获取文章列表
@@ -60,96 +52,61 @@ public interface ContentMng {
 	 * @return
 	 */
 	public List<Content> getListByIdsForTag(Integer[] ids, int orderBy);
-	
+
 	/**
 	 * 查询固顶级别大于topLevel 且到期内容
-	 * @param topLevel 固顶级别
-	 * @param expiredDay 固顶到期日期
+	 * 
+	 * @param topLevel
+	 *            固顶级别
+	 * @param expiredDay
+	 *            固顶到期日期
 	 * @return
 	 */
-	public  List<Content> getExpiredTopLevelContents(byte topLevel,Date expiredDay);
-	
+	public List<Content> getExpiredTopLevelContents(byte topLevel, Date expiredDay);
+
 	/**
 	 * 查询到了归档日期内容
+	 * 
 	 * @param pigeonholeDay
 	 * @return
 	 */
-	public  List<Content> getPigeonholeContents(Date pigeonholeDay);
+	public List<Content> getPigeonholeContents(Date pigeonholeDay);
 
-	public Content getSide(Integer id, Integer siteId, Integer channelId,
-			boolean next);
+	public Content getSide(Integer id, Integer siteId, Integer channelId, boolean next);
 
-	public Pagination getPageBySiteIdsForTag(Integer[] siteIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title, int open,Map<String,String[]>attr,int orderBy, int pageNo, int pageSize);
+	public Pagination getPageBySiteIdsForTag(Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListBySiteIdsForTag(Integer[] siteIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open,Map<String,String[]>attr, int orderBy, Integer first, Integer count);
+	public List<Content> getListBySiteIdsForTag(Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByChannelIdsForTag(Integer[] channelIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title, int open,Map<String,String[]>attr, int orderBy, int option,int pageNo, int pageSize);
+	public Pagination getPageByChannelIdsForTag(Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int option, int pageNo, int pageSize);
 
-	public List<Content> getListByChannelIdsForTag(Integer[] channelIds,
-			Integer[] typeIds, Boolean titleImg, Boolean recommend,
-			String title,int open,Map<String,String[]>attr, int orderBy, int option, Integer first, Integer count);
+	public List<Content> getListByChannelIdsForTag(Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int option, Integer first, Integer count);
 
-	public Pagination getPageByChannelPathsForTag(String[] paths,
-			Integer[] siteIds, Integer[] typeIds, Boolean titleImg,
-			Boolean recommend, String title, int open,Map<String,String[]>attr,int orderBy, int pageNo,
-			int pageSize);
+	public Pagination getPageByChannelPathsForTag(String[] paths, Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByChannelPathsForTag(String[] paths,
-			Integer[] siteIds, Integer[] typeIds, Boolean titleImg,
-			Boolean recommend, String title,int open,Map<String,String[]>attr, int orderBy, Integer first,
-			Integer count);
+	public List<Content> getListByChannelPathsForTag(String[] paths, Integer[] siteIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByTopicIdForTag(Integer topicId,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Boolean titleImg, Boolean recommend, String title,int open,Map<String,String[]>attr, int orderBy,
-			int pageNo, int pageSize);
+	public Pagination getPageByTopicIdForTag(Integer topicId, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByTopicIdForTag(Integer topicId,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Boolean titleImg, Boolean recommend, String title,int open,Map<String,String[]>attr, int orderBy,
-			Integer first, Integer count);
+	public List<Content> getListByTopicIdForTag(Integer topicId, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
-	public Pagination getPageByTagIdsForTag(Integer[] tagIds,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Integer excludeId, Boolean titleImg, Boolean recommend,
-			String title, int open,Map<String,String[]>attr,int orderBy, int pageNo, int pageSize);
+	public Pagination getPageByTagIdsForTag(Integer[] tagIds, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Integer excludeId, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, int pageNo, int pageSize);
 
-	public List<Content> getListByTagIdsForTag(Integer[] tagIds,
-			Integer[] siteIds, Integer[] channelIds, Integer[] typeIds,
-			Integer excludeId, Boolean titleImg, Boolean recommend,
-			String title,int open,Map<String,String[]>attr, int orderBy, Integer first, Integer count);
+	public List<Content> getListByTagIdsForTag(Integer[] tagIds, Integer[] siteIds, Integer[] channelIds, Integer[] typeIds, Integer excludeId, Boolean titleImg, Boolean recommend, String title, int open, Map<String, String[]> attr, int orderBy, Integer first, Integer count);
 
 	public Content findById(Integer id);
 
-	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
-			Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds,
-			String[] tagArr, String[] attachmentPaths,
-			String[] attachmentNames, String[] attachmentFilenames,
-			String[] picPaths, String[] picDescs, Integer channelId,
-			Integer typeId, Boolean draft,Boolean contribute, CmsUser user, boolean forMember);
+	public Content save(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] tagArr, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Integer channelId, Integer typeId, Boolean draft, Boolean contribute, CmsUser user, boolean forMember);
 
-	public Content save(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
-			Integer channelId,Integer typeId, Boolean draft, CmsUser user, boolean forMember);
+	public Content save(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember);
 
-	public Content update(Content bean, ContentExt ext,ContentProduct product, ContentTxt txt,ContentDoc doc,
-			String[] tagArr, Integer[] channelIds, Integer[] topicIds,
-			Integer[] viewGroupIds, String[] attachmentPaths,
-			String[] attachmentNames, String[] attachmentFilenames,
-			String[] picPaths, String[] picDescs, Map<String, String> attr,
-			Integer channelId, Integer typeId, Boolean draft, CmsUser user,
-			boolean forMember);
-	
+	public Content update(Content bean, ContentExt ext, ContentProduct product, ContentTxt txt, ContentDoc doc, String[] tagArr, Integer[] channelIds, Integer[] topicIds, Integer[] viewGroupIds, String[] attachmentPaths, String[] attachmentNames, String[] attachmentFilenames, String[] picPaths, String[] picDescs, Map<String, String> attr, Integer channelId, Integer typeId, Boolean draft, CmsUser user, boolean forMember);
+
 	public Content update(Content bean);
-	
-	public Content updateByChannelIds(Integer contentId,Integer[]channelIds);
-	
-	public Content addContentToTopics(Integer contentId,Integer[]topicIds);
+
+	public Content updateByChannelIds(Integer contentId, Integer[] channelIds);
+
+	public Content addContentToTopics(Integer contentId, Integer[] topicIds);
 
 	public Content check(Integer id, CmsUser user);
 
@@ -157,8 +114,8 @@ public interface ContentMng {
 
 	public Content reject(Integer id, CmsUser user, String opinion);
 
-	public Content[] reject(Integer[] ids, CmsUser user,String opinion);
-	
+	public Content[] reject(Integer[] ids, CmsUser user, String opinion);
+
 	public Content submit(Integer id, CmsUser user);
 
 	public Content[] submit(Integer[] ids, CmsUser user);
@@ -174,26 +131,22 @@ public interface ContentMng {
 	public Content deleteById(Integer id);
 
 	public Content[] deleteByIds(Integer[] ids);
-	
-	public Content deleteByIdWithShare(Integer id,Integer siteId);
-	
-	public Content[] deleteByIdsWithShare(Integer[] ids,Integer siteId);
-	
+
+	public Content deleteByIdWithShare(Integer id, Integer siteId);
+
+	public Content[] deleteByIdsWithShare(Integer[] ids, Integer siteId);
+
 	public Content deleteShare(Integer id);
-	
+
 	public Content[] deleteShares(Integer[] ids);
 
-	public Content[] contentStatic(Integer[] ids)
-			throws TemplateNotFoundException, TemplateParseException,
-			GeneratedZeroStaticPageException, StaticPageNotOpenException,
-			ContentNotCheckedException;
-	
+	public Content[] contentStatic(Integer[] ids) throws TemplateNotFoundException, TemplateParseException, GeneratedZeroStaticPageException, StaticPageNotOpenException, ContentNotCheckedException;
+
 	public Pagination getPageForCollection(Integer siteId, Integer memberId, int pageNo, int pageSize);
-	
-	public void updateFileByContent(Content bean,Boolean valid);
-	public Byte getCheckStep();
-	public Pagination getMaxReleaseDate(Integer currUserId,Integer inputUserId,ContentStatus status, Byte checkStep, Integer siteId,
-			Integer channelId, int pageNo, int pageSize);
+
+	public void updateFileByContent(Content bean, Boolean valid);
+	public Content getMaxReleaseDate(Integer inputUserId, List<ContentStatus> status, Integer siteId, Integer channelId);
 	public void saveFundNews(Map<String, List<FundNewsBean>> map);
 	public void saveResearchs(Map<String, List<ResearchBean>> map);
+	public Content deleteByUser(Integer userId);
 }

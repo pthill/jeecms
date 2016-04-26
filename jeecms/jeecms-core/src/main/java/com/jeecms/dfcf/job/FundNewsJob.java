@@ -17,19 +17,23 @@ public class FundNewsJob extends CollectJob {
 
 	private final static String[] CHANNELS_PATH = {"S888009009", "S888013001", "S888013002", "S888013003", "S888013004", "S888013005", "S888013006", "S888013007", "S888013008", "S888013009"};
 	private static final Logger logger = LoggerFactory.getLogger(FundNewsJob.class);
-	@SuppressWarnings("unchecked")
 	public void runJob() {
 		final List<Channel> cList = channelMng.findByPathsAndSitedId(CHANNELS_PATH, siteId);
 		final Map<String, List<FundNewsBean>> map = new HashMap<String, List<FundNewsBean>>();
 		for (final Channel channel : cList) {
 			final List<FundNewsBean> fnbList = new ArrayList<FundNewsBean>();
-
-			List<Content> contents = (List<Content>) contentMng.getMaxReleaseDate(user.getId(), user.getId(), ContentStatus.all, contentMng.getCheckStep(), siteId, channel.getId(), 1, 1).getList();
+			List<ContentStatus> lists = new ArrayList<Content.ContentStatus>();
+			lists.add(ContentStatus.checked);
+			lists.add(ContentStatus.passed);
+			lists.add(ContentStatus.prepared);
+			lists.add(ContentStatus.rejected);
+			lists.add(ContentStatus.recycle);
+			Content content = contentMng.getMaxReleaseDate(user.getId(), lists, siteId, channel.getId());
 			String title = "";
 			Long time = 0L;
-			if (contents.size() != 0) {
-				title = contents.get(0).getTitle();
-				time = contents.get(0).getReleaseDate().getTime();
+			if (content != null) {
+				title = content.getTitle();
+				time = content.getReleaseDate().getTime();
 			}
 			for (int j = 1; j < PAGE; j++) {
 				try {
