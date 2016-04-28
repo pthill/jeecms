@@ -82,7 +82,7 @@ h1{text-align:center;font-size:18px;}
 </form>
 <form id="viewInFront" action="${content.urlDynamic}" target="_blank" method="get"></form>
 <div style="border:1px solid #ccc;">
-	<h1>${content.title?html}</h1>haha
+	<h1>${content.title?html}</h1>
 	<p class="info">
 		<@s.m "content.user"/>: ${content.user.username}
 		<#if content.author??>&nbsp; <@s.m "content.author"/>: ${content.author}</#if>
