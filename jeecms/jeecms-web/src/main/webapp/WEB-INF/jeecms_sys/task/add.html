@@ -32,7 +32,7 @@ $(function() {
 	$("#attr_channel_id").parent().hide();
 	$("#attr_channel_id").prop("disabled","disabled");
 	controlInput(1);
-	$("#cronExpression").hide();
+	$("#cronExpression").prop("disabled","disabled");
 });
 function selectTaskType(){
 	var type=$("#type").val();

@@ -273,6 +273,7 @@ public class ContentMngImpl implements ContentMng, ChannelDeleteChecker {
 		} else if (draft != null && draft) {
 			// 草稿
 			bean.setStatus(ContentCheck.DRAFT);
+			userStep = 2;
 		} else {
 			workflow = channel.getWorkflowExtends();
 			if (workflow != null) {
