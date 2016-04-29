@@ -451,6 +451,7 @@
 				<!-- Settings for the web application -->
 				<filters>
 					<filter>${main.base.path}/project.default.properties</filter>
+					<filter>${main.base.path}/project.server.properties</filter>
 					<filter>${main.base.path}/project.live.properties</filter>
 				</filters>
 			</build>
